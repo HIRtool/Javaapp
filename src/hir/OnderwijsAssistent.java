@@ -8,6 +8,11 @@ public class OnderwijsAssistent extends Assistent{
         super(assNr, assNaam, leidingGevendeProf);
     }
 
+    @Override
+    public int maxSurveillanties() {
+        return aantalSurveillanties;
+    }
+
         
     
 }
