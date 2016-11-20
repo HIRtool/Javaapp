@@ -18,8 +18,8 @@ public abstract class Assistent {
     }
 
     //Gaat na of de assistent al genoeg examensessies heeft bijgewoond
-    private boolean checkStatusVrij(){
-        return toegewezenSessies.size() < maxSurveillanties();
+    private void setStatusVrij(){
+        isVrij = toegewezenSessies.size() < maxSurveillanties();
     }
     
     //Haalt de maximale surveillanties op
@@ -33,7 +33,7 @@ public abstract class Assistent {
         {
             throw new Exception("Assistent heeft geen vrije surveillanties meer");
         }
-        checkStatusVrij();
+        setStatusVrij();
     }
     
     public Prof getLeidingGevendeProf() {
