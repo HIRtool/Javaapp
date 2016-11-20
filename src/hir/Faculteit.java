@@ -24,7 +24,7 @@ public class Faculteit {
     }
     
     public void removeOpleiding(Opleiding opl){
-        opleidingen.remove(opl):
+        opleidingen.remove(opl);
     }
     
     public void addVakgroep(Vakgroep vakgr){
