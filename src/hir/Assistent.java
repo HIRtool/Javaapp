@@ -4,15 +4,17 @@ import java.util.HashSet;
 
 public abstract class Assistent {
     
-    private int assNr;
-    private String assNaam;
+    private int aNr;
+    private String assVoornaam;
+    private String assAchternaam;
     private Prof leidingGevendeProf;
     private HashSet<ExamenSessie> toegewezenSessies = new HashSet<>();
     private boolean isVrij;
 
-    public Assistent(int assNr, String assNaam, Prof leidingGevendeProf) {
-        this.assNr = assNr;
-        this.assNaam = assNaam;
+    public Assistent(int aNr, String assVoornaam, String assAchternaam, Prof leidingGevendeProf) {
+        this.aNr = aNr;
+        this.assVoornaam = assVoornaam;
+        this.assAchternaam = assAchternaam;
         this.leidingGevendeProf = leidingGevendeProf;
         this.isVrij = true;
     }
@@ -44,20 +46,28 @@ public abstract class Assistent {
         this.leidingGevendeProf = leidingGevendeProf;
     }
 
-    public int getAssNr() {
-        return assNr;
+    public int getANr() {
+        return aNr;
     }
 
-    public void setAssNr(int assNr) {
-        this.assNr = assNr;
+    public void setANr(int aNr) {
+        this.aNr = aNr;
     }
 
-    public String getAssNaam() {
-        return assNaam;
+    public String getAssVoornaam() {
+        return assVoornaam;
     }
 
-    public void setAssNaam(String assNaam) {
-        this.assNaam = assNaam;
+    public void setAssVoornaam(String assVoornaam) {
+        this.assVoornaam = assVoornaam;
+    }
+    
+    public String getAssAchternaam() {
+        return assAchternaam;
+    }
+
+    public void setAssAchternaam(String assAchternaam) {
+        this.assAchternaam = assAchternaam;
     }
     
     

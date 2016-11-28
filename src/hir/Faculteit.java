@@ -6,7 +6,7 @@ public class Faculteit {
     
     private String facNaam;
     private String decaan;
-    private HashSet<Opleiding> opleidingen = new HashSet<>(); 
+    public HashSet<Opleiding> opleidingen = new HashSet<>(); 
     private Adres adres;
     private HashSet<Vakgroep> vakgroepen = new HashSet<>();
     
@@ -55,7 +55,17 @@ public class Faculteit {
         this.opleidingen = opleidingen;
     }
     
-     public HashSet<Vakgroep> getVakgroepen() {
+    public boolean opleidingenHasOpleiding (Opleiding opl)
+    {
+        return opleidingen.contains(opl);
+    }
+    
+    public boolean hasVakgroep (Vakgroep vakgr)
+    {
+        return vakgroepen.contains(vakgr);
+    }
+    
+    public HashSet<Vakgroep> getVakgroepen() {
         return vakgroepen;
     }
 

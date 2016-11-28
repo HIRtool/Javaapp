@@ -261,7 +261,7 @@ public class ExamenGUI extends javax.swing.JFrame {
         Opleiding b = new Opleiding("wiskunde", 30, 5);
          c.OpleidingToevoegen(a);
         c.OpleidingToevoegen(b);
-        Prof e = new Prof(15, "mark");
+        Prof e = new Prof(15, "mark", "Vercautern");
         Opleidingsonderdeel d = new Opleidingsonderdeel("wiskunde1", 2, 2, 2, e);
         Opleidingsonderdeel f = new Opleidingsonderdeel("wiskunde3", 2, 2, 2, e);
         Opleidingsonderdeel g = new Opleidingsonderdeel("chemie1", 2, 2, 2, e);

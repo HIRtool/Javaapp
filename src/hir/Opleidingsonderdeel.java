@@ -8,7 +8,7 @@ public class Opleidingsonderdeel {
     private int modelTrajectJaar;
     private int aantalStudenten;
     private int semester;
-    private Examen examen;
+    private Examen examen; //Niet verplicht aanwezig
     private Prof verantwoordelijkeLesgever;
     private HashSet<Prof> medelesgevers = new HashSet<>();
 

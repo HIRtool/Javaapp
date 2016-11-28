@@ -4,8 +4,8 @@ public class OnderzoeksAssistent extends Assistent{
     
     private final int aantalSurveillanties = 3;
 
-    public OnderzoeksAssistent(int assNr, String assNaam, Prof leidingGevendeProf) {
-        super(assNr, assNaam, leidingGevendeProf);
+    public OnderzoeksAssistent(int aNr, String assVoornaam, String assAchternaam, Prof leidingGevendeProf) {
+        super(aNr, assVoornaam, assAchternaam, leidingGevendeProf);
     }
 
     @Override

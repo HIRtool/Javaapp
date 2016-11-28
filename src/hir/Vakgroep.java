@@ -20,6 +20,10 @@ public class Vakgroep {
     public void removeProf(Prof pr){
         proffen.remove(pr);
     }
+    
+    public boolean hasProf(Prof pr){
+        return proffen.contains(pr);
+    }
 
     public HashSet<Prof> getProffen() {
         return proffen;
