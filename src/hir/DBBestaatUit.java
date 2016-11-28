@@ -4,10 +4,10 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-public class DBVakgroepSteltTeWerk {
+public class DBBestaatUit {
     
-    //Legt de link tussen proffen die werken bij een vakgroep
-    public static void loadProffenIntoVakgroep() throws DBException
+    //Legt de link tussen vakken(opleidingsonderdelen) en opleidingen. Zo kunnen verschillende opleidingen hetzelfde vak hebben
+    public static void loadOplOnderdeelIntoOpleiding() throws DBException
     {
         Connection con = null;
         try
@@ -17,23 +17,22 @@ public class DBVakgroepSteltTeWerk {
                                                  ResultSet.CONCUR_READ_ONLY);
 
             String sql = "SELECT * "+
-                         "FROM VakgroepSteltTeWerk ";
+                         "FROM BestaatUit ";
             
             ResultSet srs = stmt.executeQuery(sql);
             
-            String vakgrNaam; 
-            int pnr;
-            
+            String oplNaam, oplOndNaam; 
+                        
             while (srs.next())
             {
-                vakgrNaam = srs.getString("VakgrNaam");
-                pnr = srs.getInt("Pnr");
+                oplNaam = srs.getString("OplNaam");
+                oplOndNaam = srs.getString("OplOndNaam");
                       
-                Prof pr = DBProf.getProf(pnr);
-                Vakgroep vakgr = DBVakgroep.getVakgroep(vakgrNaam);
-                if(!vakgr.hasProf(pr))
+                Opleiding opl = DBOpleiding.getOpleiding(oplNaam);
+                Opleidingsonderdeel oplOnd = DBOpleidingsOnderdeel.getOpleidingsonderdeel(oplOndNaam);
+                if(!opl.hasOpleidingsonderdeel(oplOnd))
                 {
-                  vakgr.addProf(pr);
+                  opl.addOpleidingsonderdeel(oplOnd);
                 }
             }
             DB.closeConnection(con);

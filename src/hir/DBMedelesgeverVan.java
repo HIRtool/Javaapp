@@ -4,10 +4,10 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-public class DBVakgroepSteltTeWerk {
+public class DBMedelesgeverVan {
     
-    //Legt de link tussen proffen die werken bij een vakgroep
-    public static void loadProffenIntoVakgroep() throws DBException
+    //Laadt extra lesgevers(proffen) in voor een vak(opleidingsonderdeel)
+    public static void loadMedelesgevers() throws DBException
     {
         Connection con = null;
         try
@@ -17,23 +17,23 @@ public class DBVakgroepSteltTeWerk {
                                                  ResultSet.CONCUR_READ_ONLY);
 
             String sql = "SELECT * "+
-                         "FROM VakgroepSteltTeWerk ";
+                         "FROM Medelesgevervan ";
             
             ResultSet srs = stmt.executeQuery(sql);
             
-            String vakgrNaam; 
+            String oplOndNaam; 
             int pnr;
             
             while (srs.next())
             {
-                vakgrNaam = srs.getString("VakgrNaam");
+                oplOndNaam = srs.getString("OplOndNaam");
                 pnr = srs.getInt("Pnr");
                       
                 Prof pr = DBProf.getProf(pnr);
-                Vakgroep vakgr = DBVakgroep.getVakgroep(vakgrNaam);
-                if(!vakgr.hasProf(pr))
+                Opleidingsonderdeel oplOnd = DBOpleidingsOnderdeel.getOpleidingsonderdeel(oplOndNaam);
+                if(!oplOnd.hasMedelesgever(pr))
                 {
-                  vakgr.addProf(pr);
+                  oplOnd.addMedelesgever(pr);
                 }
             }
             DB.closeConnection(con);
@@ -46,5 +46,4 @@ public class DBVakgroepSteltTeWerk {
             throw new DBException(ex);
         }        
     }
-    
 }

@@ -43,18 +43,9 @@ public class DBOpleidingsOnderdeel {
             Prof pr = DBProf.getProf(pnr);
             OpleidingsCommissie oplCom = DBOpleidingsCommissie.getOpleidingsCommissie(oplComNaam);
             Opleidingsonderdeel oplOnderdeel = new Opleidingsonderdeel(oplOndNaam, modelTrajectJaar, aantalStudenten, semester, oplCom, pr);
-            if(oplOnderdeel.)
-            {
-                DB.closeConnection(con);
-                return vakgroep;
-            }
-            else
-            {
-                fac.addVakgroep(vakgroep);
-                DB.closeConnection(con);
-                return vakgroep;
-            }
             
+            DB.closeConnection(con);
+            return oplOnderdeel;
             
         }
         catch (Exception ex)

@@ -22,6 +22,10 @@ public class Opleidingsonderdeel {
         this.verantwoordelijkeLesgever = verantwoordelijkeLesgever;
     }
     
+    public boolean hasMedelesgever(Prof medelesgever){
+        return medelesgevers.contains(medelesgever);
+    }
+    
     public void addMedelesgever(Prof medelesgever){
         medelesgevers.add(medelesgever);
     }

@@ -2,16 +2,27 @@ package hir;
 
 public abstract class Examen {
     
+    private int exNr;
     private String exNaam;
     private int examenKans;
     private int aantalStudenten;
 
-    public Examen(String exNaam, int examenKans, int aantalStudenten) {
+    public Examen(int exNr, String exNaam, int examenKans, int aantalStudenten) {
+        this.exNr = exNr;
         this.exNaam = exNaam;
         this.examenKans = examenKans;
         this.aantalStudenten = aantalStudenten;
     }
 
+    public int getExNr() {
+        return exNr;
+    }
+
+    public void setExNr(int exNr) {
+        this.exNr = exNr;
+    }
+
+    
     public String getExNaam() {
         return exNaam;
     }

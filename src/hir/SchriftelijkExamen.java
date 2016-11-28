@@ -7,8 +7,8 @@ public class SchriftelijkExamen extends Examen {
     private Soort soort;
     private Slot toegewezenSlot;
 
-    public SchriftelijkExamen(Soort soort, String exNaam, int examenKans, int aantalStudenten) {
-        super(exNaam, examenKans, aantalStudenten);
+    public SchriftelijkExamen(Soort soort, int exNr, String exNaam, int examenKans, int aantalStudenten) {
+        super(exNr, exNaam, examenKans, aantalStudenten);
         this.soort = soort;
     }
 
