@@ -17,6 +17,14 @@ public class Opleiding {
         this.facNaam = facNaam;
     }
 
+    public boolean hasOpleidingsonderdeel(Opleidingsonderdeel oplOnd){
+        return opleidingsOnderdelen.contains(oplOnd);
+    }
+    
+    public void addOpleidingsonderdeel(Opleidingsonderdeel oplOnd){
+        opleidingsOnderdelen.add(oplOnd);
+    }
+    
     public String getOplNaam() {
         return oplNaam;
     }

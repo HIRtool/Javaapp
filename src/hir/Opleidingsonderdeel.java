@@ -9,14 +9,16 @@ public class Opleidingsonderdeel {
     private int aantalStudenten;
     private int semester;
     private Examen examen; //Niet verplicht aanwezig
+    private OpleidingsCommissie opleidingsCommissie;
     private Prof verantwoordelijkeLesgever;
     private HashSet<Prof> medelesgevers = new HashSet<>();
 
-    public Opleidingsonderdeel(String oplOndNaam, int modelTrajectJaar, int aantalStudenten, int semester, Prof verantwoordelijkeLesgever) {
+    public Opleidingsonderdeel(String oplOndNaam, int modelTrajectJaar, int aantalStudenten, int semester, OpleidingsCommissie opleidingsCommissie, Prof verantwoordelijkeLesgever) {
         this.oplOndNaam = oplOndNaam;
         this.modelTrajectJaar = modelTrajectJaar;
         this.aantalStudenten = aantalStudenten;
         this.semester = semester;
+        this.opleidingsCommissie = opleidingsCommissie;
         this.verantwoordelijkeLesgever = verantwoordelijkeLesgever;
     }
     
@@ -26,6 +28,14 @@ public class Opleidingsonderdeel {
     
     public void removeMedelesgever(Prof medelesgever){
         medelesgevers.remove(medelesgever);
+    }
+
+    public OpleidingsCommissie getOpleidingsCommissie() {
+        return opleidingsCommissie;
+    }
+
+    public void setOpleidingsCommissie(OpleidingsCommissie opleidingsCommissie) {
+        this.opleidingsCommissie = opleidingsCommissie;
     }
 
     public Prof getVerantwoordelijkeLesgever() {
