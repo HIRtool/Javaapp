@@ -5,10 +5,10 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.HashSet;
 
-public class DBFaculteit {
+public class DBLokaal {
     
-    //Leest 1 faculteit in wanneer de naam vd faculteit wordt meegegeven.
-    public static Faculteit getFaculteit(String facNaam) throws DBException
+    //Leest 1 lokaal in wanneer de naam vh lokaal wordt meegegeven.
+    public static Lokaal getLokaal(String lokaalNaam) throws DBException
     {
         Connection con = null;
         try
@@ -18,22 +18,22 @@ public class DBFaculteit {
                                                  ResultSet.CONCUR_READ_ONLY);
 
             String sql = "SELECT * "+
-                         "FROM Faculteit "+
-                         "WHERE FacNaam = " + facNaam;
+                         "FROM Lokaal "+
+                         "WHERE LokaalNaam = " + lokaalNaam;
             
             ResultSet srs = stmt.executeQuery(sql);
-            String straat, gemeente, decaan; 
-            int nummer, postcode;
+            String straat, gemeente; 
+            int nummer, postcode, capaciteit;
             
             
             if (srs.next())
             {
-                facNaam = srs.getString("FacNaam");
+                lokaalNaam = srs.getString("LokaalNaam");
                 straat = srs.getString("straat");
                 nummer = srs.getInt("nummer");
                 postcode = srs.getInt("postcode");
                 gemeente = srs.getString("gemeente");
-                decaan = srs.getString("decaan");
+                capaciteit = srs.getInt("capaciteit");
                 
             }
             else {
@@ -41,10 +41,10 @@ public class DBFaculteit {
                 return null;
             }
             Adres adres = new Adres(straat, nummer, postcode, gemeente);
-            Faculteit faculteit = new Faculteit(facNaam, decaan, adres);
+            Lokaal lokaal = new Lokaal(lokaalNaam, adres, capaciteit);
                         
             DB.closeConnection(con);
-            return faculteit;
+            return lokaal;
         }
         catch (Exception ex)
         {
@@ -55,7 +55,7 @@ public class DBFaculteit {
     }
     
     //Leest alle faculteiten in
-    public static HashSet<Faculteit> getFaculteiten() throws DBException
+    public static HashSet<Lokaal> getLokalen() throws DBException
     {
         Connection con = null;
         try
@@ -64,16 +64,16 @@ public class DBFaculteit {
             Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
                                                  ResultSet.CONCUR_READ_ONLY);
 
-            String sql = "SELECT FacNaam "+
-                         "FROM Faculteit";
+            String sql = "SELECT LokaalNaam "+
+                         "FROM Lokaal";
             ResultSet srs = stmt.executeQuery(sql);
 
-            HashSet<Faculteit> faculteiten = new HashSet<Faculteit>();
+            HashSet<Lokaal> lokalen = new HashSet<Lokaal>();
             while (srs.next())
-                faculteiten.add(getFaculteit(srs.getString("FacNaam")));
+                lokalen.add(getLokaal(srs.getString("LokaalNaam")));
             
             DB.closeConnection(con);
-            return faculteiten;
+            return lokalen;
         }
         catch (DBException dbe)
         {
