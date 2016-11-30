@@ -1,6 +1,7 @@
 package hir;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.HashSet;
@@ -14,13 +15,12 @@ public class DBOpleidingsOnderdeel {
         try
         {
             con = DB.getConnection();
-            Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
-                                                 ResultSet.CONCUR_READ_ONLY);
+                        
+            String sql = "SELECT * FROM Opleidingsonderdeel WHERE OplOndNaam = ?";
+            PreparedStatement stmt = con.prepareStatement(sql);
 
-            String sql = "SELECT * "+
-                         "FROM Opleidingsonderdeel "+
-                         "WHERE OplOndNaam = " + oplOndNaam;
-            
+            stmt.setString(1, oplOndNaam);
+                        
             ResultSet srs = stmt.executeQuery(sql);
             
             String oplComNaam; 

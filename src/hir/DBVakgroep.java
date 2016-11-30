@@ -2,6 +2,7 @@ package hir;
 
 import static hir.DBFaculteit.getFaculteit;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.HashSet;
@@ -15,13 +16,13 @@ public class DBVakgroep {
         try
         {
             con = DB.getConnection();
-            Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
-                                                 ResultSet.CONCUR_READ_ONLY);
-
-            String sql = "SELECT * "+
-                         "FROM Vakgroep "+
-                         "WHERE VakgrNaam = " + vakgrNaam;
             
+            String sql = "SELECT * FROM Vakgroep WHERE VakgrNaam = ?";
+            PreparedStatement stmt = con.prepareStatement(sql);
+
+            stmt.setString(1, vakgrNaam);
+
+                        
             ResultSet srs = stmt.executeQuery(sql);
             
             String straat, gemeente, facNaam; 
@@ -77,8 +78,7 @@ public class DBVakgroep {
             Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
                                                  ResultSet.CONCUR_READ_ONLY);
 
-            String sql = "SELECT VakgrNaam "+
-                         "FROM Vakgroep";
+            String sql = "SELECT VakgrNaam FROM Vakgroep";
             ResultSet srs = stmt.executeQuery(sql);
 
             HashSet<Vakgroep> vakgroepen = new HashSet<Vakgroep>();

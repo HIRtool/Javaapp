@@ -1,6 +1,7 @@
 package hir;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.HashSet;
@@ -14,13 +15,13 @@ public class DBOpleiding {
         try
         {
             con = DB.getConnection();
-            Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
-                                                 ResultSet.CONCUR_READ_ONLY);
-
-            String sql = "SELECT * "+
-                         "FROM Opleiding "+
-                         "WHERE OplNaam = " + oplNaam;
             
+            String sql = "SELECT * FROM Opleiding WHERE OplNaam = ?";
+            PreparedStatement stmt = con.prepareStatement(sql);
+
+            stmt.setString(1, oplNaam);
+
+                        
             ResultSet srs = stmt.executeQuery(sql);
             
             String facNaam; 
@@ -67,12 +68,12 @@ public class DBOpleiding {
         try
         {
             con = DB.getConnection();
-            Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
-                                                 ResultSet.CONCUR_READ_ONLY);
             
-            String sql = "SELECT OplNaam "+
-                         "FROM Opleiding "+
-                         "WHERE FacNaam = " + faculteit;
+            String sql = "SELECT OplNaam FROM Opleiding WHERE FacNaam = ?";
+            PreparedStatement stmt = con.prepareStatement(sql);
+
+            stmt.setString(1, faculteit);
+            
             ResultSet srs = stmt.executeQuery(sql);
             HashSet<String> opleidingen = new HashSet<>();
             

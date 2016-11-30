@@ -16,8 +16,7 @@ public class DBBestaatUit {
             Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
                                                  ResultSet.CONCUR_READ_ONLY);
 
-            String sql = "SELECT * "+
-                         "FROM BestaatUit ";
+            String sql = "SELECT * FROM BestaatUit ";
             
             ResultSet srs = stmt.executeQuery(sql);
             

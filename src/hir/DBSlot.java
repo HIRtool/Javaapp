@@ -18,8 +18,7 @@ public class DBSlot {
             Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
                                                  ResultSet.CONCUR_READ_ONLY);
 
-            String sql = "SELECT * "+
-                         "FROM Slot ";
+            String sql = "SELECT * FROM Slot ";
             
             ResultSet srs = stmt.executeQuery(sql);
             

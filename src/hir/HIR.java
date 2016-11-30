@@ -7,7 +7,7 @@ public class HIR {
     
 
     public static void main(String[] args) throws DBException {
-        HashSet<Faculteit> faculteiten = new HashSet<>();
+        HashSet<String> faculteiten = new HashSet<>();
         faculteiten = DBFaculteit.getFaculteiten();
         System.out.print(faculteiten);
     }

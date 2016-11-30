@@ -16,8 +16,7 @@ public class DBVakgroepSteltTeWerk {
             Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
                                                  ResultSet.CONCUR_READ_ONLY);
 
-            String sql = "SELECT * "+
-                         "FROM VakgroepSteltTeWerk ";
+            String sql = "SELECT * FROM VakgroepSteltTeWerk ";
             
             ResultSet srs = stmt.executeQuery(sql);
             

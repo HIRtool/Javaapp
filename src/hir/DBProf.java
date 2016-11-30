@@ -1,6 +1,7 @@
 package hir;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
@@ -13,13 +14,12 @@ public class DBProf {
         try
         {
             con = DB.getConnection();
-            Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
-                                                 ResultSet.CONCUR_READ_ONLY);
-
-            String sql = "SELECT * "+
-                         "FROM Prof "+
-                         "WHERE Pnr = " + pnr;
             
+            String sql = "SELECT * FROM Prof WHERE Pnr = ?";
+            PreparedStatement stmt = con.prepareStatement(sql);
+
+            stmt.setInt(1, pnr);
+           
             ResultSet srs = stmt.executeQuery(sql);
             String profVoornaam, profAchternaam; 
             
