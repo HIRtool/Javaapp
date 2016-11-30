@@ -20,7 +20,7 @@ public class DBProf {
 
             stmt.setInt(1, pnr);
            
-            ResultSet srs = stmt.executeQuery(sql);
+            ResultSet srs = stmt.executeQuery();
             String profVoornaam, profAchternaam; 
             
             

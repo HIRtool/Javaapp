@@ -22,7 +22,7 @@ public class DBOpleiding {
             stmt.setString(1, oplNaam);
 
                         
-            ResultSet srs = stmt.executeQuery(sql);
+            ResultSet srs = stmt.executeQuery();
             
             String facNaam; 
             int aantalStudenten, opleidingsduur;
@@ -63,37 +63,5 @@ public class DBOpleiding {
             throw new DBException(ex);
         }        
     }
-    public static HashSet<String> getOpleidingen(String faculteit) throws DBException{
-        Connection con = null;
-        try
-        {
-            con = DB.getConnection();
-            
-            String sql = "SELECT OplNaam FROM Opleiding WHERE FacNaam = ?";
-            PreparedStatement stmt = con.prepareStatement(sql);
-
-            stmt.setString(1, faculteit);
-            
-            ResultSet srs = stmt.executeQuery(sql);
-            HashSet<String> opleidingen = new HashSet<>();
-            
-            while(srs.next()){
-                opleidingen.add(srs.getString("OplNaam"));
-                
-            }
-            DB.closeConnection(con);
-                return opleidingen;
-            } catch (DBException dbe)
-        {
-            dbe.printStackTrace();
-            DB.closeConnection(con);
-            throw dbe;
-        }     
-        catch (Exception ex)
-        {
-            ex.printStackTrace();
-            DB.closeConnection(con);
-            throw new DBException(ex);
-        }
-	}
+    
 }
