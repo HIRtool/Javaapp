@@ -1,5 +1,6 @@
 package hir;
 
+//test
 public class Adres {
     
     private String straat;
