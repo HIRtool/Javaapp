@@ -3,7 +3,7 @@ package hir;
 import java.util.Date;
 import java.util.HashSet;
 
-public class Slot {
+public class Slot2 {
     
     public static enum Moment{VoorMiddag, NaMiddag};
     private final int AANTAL_SLOTS = 48;
@@ -13,7 +13,7 @@ public class Slot {
     private HashSet<Examen> examenLijst;
     private Date startdatum ;
 
-    public Slot(int slotNr, Date datum, Moment moment) {
+    public Slot2(int slotNr, Date datum, Moment moment) {
         this.slotNr = slotNr;
         this.datum = datum;
         this.moment = moment;
