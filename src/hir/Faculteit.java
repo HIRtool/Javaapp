@@ -81,5 +81,8 @@ public class Faculteit {
         this.adres = adres;
     }
     
+    public String toString(){
+        return getFacNaam();
+    }
     
 }

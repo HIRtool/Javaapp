@@ -98,6 +98,8 @@ public class Opleidingsonderdeel {
         this.examen = examen;
     }
     
-    
+    public String toString(){
+        return getOplOndNaam();
+    }
     
 }

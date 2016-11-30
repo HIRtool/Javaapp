@@ -65,7 +65,9 @@ public class Opleiding {
         this.facNaam = facNaam;
     }
 
-    
+    public String toString(){
+        return getOplNaam();
+    }
     
     
 }

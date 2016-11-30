@@ -3,6 +3,7 @@ package hir;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.HashSet;
 
 public class DBOpleiding {
     
@@ -61,4 +62,37 @@ public class DBOpleiding {
             throw new DBException(ex);
         }        
     }
+    public static HashSet<String> getOpleidingen(String faculteit) throws DBException{
+        Connection con = null;
+        try
+        {
+            con = DB.getConnection();
+            Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+                                                 ResultSet.CONCUR_READ_ONLY);
+            
+            String sql = "SELECT OplNaam "+
+                         "FROM Opleiding "+
+                         "WHERE FacNaam = " + faculteit;
+            ResultSet srs = stmt.executeQuery(sql);
+            HashSet<String> opleidingen = new HashSet<>();
+            
+            while(srs.next()){
+                opleidingen.add(srs.getString("OplNaam"));
+                
+            }
+            DB.closeConnection(con);
+                return opleidingen;
+            } catch (DBException dbe)
+        {
+            dbe.printStackTrace();
+            DB.closeConnection(con);
+            throw dbe;
+        }     
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+            DB.closeConnection(con);
+            throw new DBException(ex);
+        }
+	}
 }
