@@ -21,7 +21,7 @@ public class DBOpleidingsOnderdeel {
 
             stmt.setString(1, oplOndNaam);
                         
-            ResultSet srs = stmt.executeQuery(sql);
+            ResultSet srs = stmt.executeQuery();
             
             String oplComNaam; 
             int modelTrajectJaar, aantalStudenten, semester, pnr;

@@ -22,7 +22,7 @@ public class DBAssistent {
             stmt.setInt(1, aNr);
             
             
-            ResultSet srs = stmt.executeQuery(sql);
+            ResultSet srs = stmt.executeQuery();
             String assVoornaam, assAchternaam; 
             int soort, pnr;
             

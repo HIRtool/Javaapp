@@ -22,7 +22,7 @@ public class DBOpleiding {
             stmt.setString(1, oplNaam);
 
                         
-            ResultSet srs = stmt.executeQuery(sql);
+            ResultSet srs = stmt.executeQuery();
             
             String facNaam; 
             int aantalStudenten, opleidingsduur;
@@ -74,7 +74,7 @@ public class DBOpleiding {
 
             stmt.setString(1, faculteit);
             
-            ResultSet srs = stmt.executeQuery(sql);
+            ResultSet srs = stmt.executeQuery();
             HashSet<String> opleidingen = new HashSet<>();
             
             while(srs.next()){

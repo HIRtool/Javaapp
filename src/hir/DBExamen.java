@@ -20,7 +20,7 @@ public class DBExamen {
             stmt.setInt(1, exNr);
 
                         
-            ResultSet srs = stmt.executeQuery(sql);
+            ResultSet srs = stmt.executeQuery();
             
             String examenNaam, oplOndNaam; 
             int examenKans, aantalStudenten;
