@@ -23,7 +23,7 @@ public class DBVakgroep {
             stmt.setString(1, vakgrNaam);
 
                         
-            ResultSet srs = stmt.executeQuery();
+            ResultSet srs = stmt.executeQuery(sql);
             
             String straat, gemeente, facNaam; 
             int nr, postcode;

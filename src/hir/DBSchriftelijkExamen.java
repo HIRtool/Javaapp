@@ -21,7 +21,7 @@ public class DBSchriftelijkExamen {
             stmt.setInt(1, exNr);
 
                        
-            ResultSet srs = stmt.executeQuery();
+            ResultSet srs = stmt.executeQuery(sql);
             
             int soort, slotNr;
             

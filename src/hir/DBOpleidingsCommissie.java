@@ -20,7 +20,7 @@ public class DBOpleidingsCommissie {
 
             stmt.setString(1, oplComNaam);
                        
-            ResultSet srs = stmt.executeQuery();
+            ResultSet srs = stmt.executeQuery(sql);
             
             String oplNaam; 
             int pnr;
