@@ -128,7 +128,8 @@ public class DBOpleidingsOnderdeel {
                          "WHERE  OplOndNaam = " + opleidingsonderdeelnaam;
             ResultSet srs = stmt.executeQuery(sql);
             DB.closeConnection(con);
-            return AantalStudenten = srs.getInt("aantal_studenten");
+            return AantalStudenten = srs.getInt("Aantal_Studenten");
+            
             
         
     } catch (DBException dbe)

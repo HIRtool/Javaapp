@@ -83,6 +83,6 @@ public class Faculteit {
     
     public String toString(){
         return getFacNaam();
-    }
+    } 
     
 }
