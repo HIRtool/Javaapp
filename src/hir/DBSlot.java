@@ -4,12 +4,13 @@ import hir.Slot.Moment;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class DBSlot {
     
     //Laadt alle slots
-    public static void loadSlots() throws DBException
+     public static ArrayList<Slot> loadSlots() throws DBException
     {
         Connection con = null;
         try
@@ -25,7 +26,7 @@ public class DBSlot {
             Date datum; 
             int slotNr;
             Moment moment;
-            
+            ArrayList<Slot> slots = new ArrayList<>();
             while (srs.next())
             {
                 slotNr = srs.getInt("SlotNr");
@@ -38,17 +39,20 @@ public class DBSlot {
                 }
                       
                 Slot slot = new Slot(slotNr, datum, moment);
-                
+                slots.add(slot);
             }
-            DB.closeConnection(con);
             
+            
+            DB.closeConnection(con);
+            return slots;
         }
         catch (Exception ex)
         {
             ex.printStackTrace();
             DB.closeConnection(con);
             throw new DBException(ex);
-        }        
+        }
+        
     }
     
 }

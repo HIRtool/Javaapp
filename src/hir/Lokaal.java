@@ -35,7 +35,12 @@ public class Lokaal {
     public void setCapaciteit(int capaciteit) {
         this.capaciteit = capaciteit;
     }
-    
-    
+    public String toString(){
+    return this.getLokaalNaam() + " (" + this.getCapaciteit() + ")";
+}
     
 }
+    
+    
+    
+

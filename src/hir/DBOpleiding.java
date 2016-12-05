@@ -68,8 +68,8 @@ public class DBOpleiding {
         Connection con = null;
         try
         {
-            con = DB.getConnection();
-            String sql = "SELECT opleidingsduur FROM Opleiding WHERE OplNaam = ?";
+             con = DB.getConnection();
+            String sql = "SELECT opleidingsduur FROM Opleiding WHERE OplNaam = ? ";
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setString(1, oplNaam);
             ResultSet srs = stmt.executeQuery(sql);

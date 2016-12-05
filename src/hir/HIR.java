@@ -8,7 +8,7 @@ public class HIR {
     
 
     public static void main(String[] args) throws DBException {
-        HashSet<String> faculteiten = new HashSet<>();
+      /*  HashSet<String> faculteiten = new HashSet<>();
         faculteiten = DBFaculteit.getFaculteiten();
         System.out.print(faculteiten);
         Date b = new Date(2016, 21, 11);
@@ -17,6 +17,10 @@ public class HIR {
         ExamenGUI c = new ExamenGUI();
         c.show();
         c.setFaculteitLijst();
+*/
+        EXAMENGUILOKAAL d = new EXAMENGUILOKAAL();
+        d.show();
+        d.setLokaalLijst();
         
         
         
