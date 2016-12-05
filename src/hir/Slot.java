@@ -49,6 +49,10 @@ public class Slot {
     public void setExamenLijst(HashSet<Examen> examenLijst) {
         this.examenLijst = examenLijst;
     }
+    public String toString(){
+        return this.datum.getDate() + "/" + this.datum.getMonth() + "/" + this.datum.getYear() + " " + this.moment;
+    } 
+            
     
     
 }
