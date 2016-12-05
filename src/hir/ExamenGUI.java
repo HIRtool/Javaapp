@@ -39,7 +39,6 @@ public class ExamenGUI extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         OpleidingsLijst = new javax.swing.JList<>();
         jLabel8 = new javax.swing.JLabel();
-        modelTrajectJaar = new javax.swing.JTextField();
         jScrollPane3 = new javax.swing.JScrollPane();
         OpleidingsonderdelenLijst = new javax.swing.JList<>();
         jLabel5 = new javax.swing.JLabel();
@@ -48,6 +47,10 @@ public class ExamenGUI extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         VerantwoordelijkeLesgever = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        modelTrajectJaarLijst = new javax.swing.JList<>();
+        submit = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -81,12 +84,6 @@ public class ExamenGUI extends javax.swing.JFrame {
 
         jLabel8.setText("Jaar");
 
-        modelTrajectJaar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                modelTrajectJaarActionPerformed(evt);
-            }
-        });
-
         jScrollPane3.setViewportView(OpleidingsonderdelenLijst);
 
         jLabel5.setText("Semester:");
@@ -111,6 +108,22 @@ public class ExamenGUI extends javax.swing.JFrame {
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
+            }
+        });
+
+        jButton3.setText("submit");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        jScrollPane5.setViewportView(modelTrajectJaarLijst);
+
+        submit.setText("jButton4");
+        submit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                submitActionPerformed(evt);
             }
         });
 
@@ -142,17 +155,20 @@ public class ExamenGUI extends javax.swing.JFrame {
                             .addComponent(aantalInschrijvingen)
                             .addComponent(VerantwoordelijkeLesgever, javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jButton2)
-                                        .addGap(54, 54, 54))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jScrollPane1)
-                                            .addComponent(modelTrajectJaar)))))))
+                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 283, Short.MAX_VALUE)
+                                        .addComponent(submit))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jButton3))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jButton2)))
+                                .addGap(54, 54, 54))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(237, 237, 237)
                         .addComponent(jLabel3)))
@@ -164,25 +180,33 @@ public class ExamenGUI extends javax.swing.JFrame {
                 .addGap(10, 10, 10)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(82, 82, 82)
+                        .addComponent(jLabel1))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel1)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel8))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton2)
-                                .addGap(18, 18, 18)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButton2)
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(modelTrajectJaar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(23, 23, 23)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(127, 127, 127)
+                                .addComponent(submit)))
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel8)
+                            .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5)
@@ -195,9 +219,8 @@ public class ExamenGUI extends javax.swing.JFrame {
                         .addComponent(jLabel6)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel9))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(129, 129, 129)
                         .addComponent(VerantwoordelijkeLesgever, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(31, 31, 31)))
                 .addGap(115, 115, 115)
@@ -218,10 +241,6 @@ public class ExamenGUI extends javax.swing.JFrame {
               
     }//GEN-LAST:event_aantalInschrijvingenActionPerformed
 
-    private void modelTrajectJaarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modelTrajectJaarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_modelTrajectJaarActionPerformed
-
     private void SemesterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SemesterActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_SemesterActionPerformed
@@ -239,6 +258,31 @@ public class ExamenGUI extends javax.swing.JFrame {
      
        
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        try {
+        String opleidingsnaam = getOpleiding();
+        setModelTrajectJaarLijst(opleidingsnaam);
+        } catch(DBException e){
+            System.out.println("ERROR");
+        }
+            
+
+        
+        
+        
+    }//GEN-LAST:event_jButton3ActionPerformed
+    private void submitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitActionPerformed
+       try{ 
+        String faculteit = getFaculteit();
+        
+        //setOpleidingsonderdelenLijst(jaar, faculteit);
+        setAantalStudenten();
+        setSemester();
+       } catch(DBException e){
+           System.out.println("ERROR");
+       }
+    }//GEN-LAST:event_submitActionPerformed
     
     public void setFaculteitLijst() throws DBException{
         DefaultListModel dlm = new DefaultListModel();
@@ -247,6 +291,16 @@ public class ExamenGUI extends javax.swing.JFrame {
         }
         FaculteitLijst.setModel(dlm);
     }
+   public void setModelTrajectJaarLijst(String oplNaam) throws DBException{
+       DefaultListModel dlm4 = new DefaultListModel();
+       for (int i = 1; i <= DBOpleiding.getOpleidingsduur(oplNaam)  ; i++) {
+          
+           dlm4.addElement(i);
+           
+       } 
+       modelTrajectJaarLijst.setModel(dlm4);
+   } 
+   
     public void setOpleidingenLijst(String faculteit) throws DBException{
         DefaultListModel dlm2 = new DefaultListModel();
         for(String a: DBOpleiding.getOpleidingen(faculteit)){
@@ -255,9 +309,12 @@ public class ExamenGUI extends javax.swing.JFrame {
         }
         OpleidingsLijst.setModel(dlm2);
     }
-    public void setOpleidingsonderdelenLijst() throws DBException{
+    public String getOpleiding(){
+        return OpleidingsLijst.getSelectedValue();
+    }
+    public void setOpleidingsonderdelenLijst(int jaar, String faculteit) throws DBException{
         DefaultListModel dlm3 = new DefaultListModel();
-        for(String a: DBOpleidingsOnderdeel.getOpleidingsOnderdelen(getJaar(), getFaculteit())){
+        for(String a: DBOpleidingsOnderdeel.getOpleidingsOnderdelen(jaar, faculteit)){
             dlm3.addElement(a);
         }
         OpleidingsonderdelenLijst.setModel(dlm3);
@@ -265,6 +322,7 @@ public class ExamenGUI extends javax.swing.JFrame {
     public int getAantalInschrijvingen(){
         return Integer.parseInt(aantalInschrijvingen.getText().trim());
     }
+    
     
     public String getOpleidingsOnderdeel(Opleiding a ){
         for(Opleidingsonderdeel b : a.getOpleidingsOnderdelen()){
@@ -276,8 +334,8 @@ public class ExamenGUI extends javax.swing.JFrame {
       return FaculteitLijst.getSelectedValue();
     }
        
-    public int getJaar(){
-       return  Integer.parseInt(modelTrajectJaar.getText().trim());
+    public String getJaar(){
+       return  modelTrajectJaarLijst.getSelectedValue();
     }
     public String getOpleidingsOnderdeel(){
         return OpleidingsonderdelenLijst.getSelectedValue();
@@ -287,10 +345,12 @@ public class ExamenGUI extends javax.swing.JFrame {
     }
     public void setAantalStudenten() throws DBException{
        aantalInschrijvingen.setText(Integer.toString(DBOpleidingsOnderdeel.getAantalStudenten(getOpleidingsOnderdeel())));
+       
     }
     public void getVerantwoordelijkeLesgever() throws DBException{
          VerantwoordelijkeLesgever.setText(DBOpleidingsOnderdeel.getVerantwoordelijkeLesgever(getOpleidingsOnderdeel()));
     }
+    
   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -304,6 +364,7 @@ public class ExamenGUI extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -317,7 +378,9 @@ public class ExamenGUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTextField modelTrajectJaar;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JList<String> modelTrajectJaarLijst;
+    private javax.swing.JButton submit;
     // End of variables declaration//GEN-END:variables
 }
 

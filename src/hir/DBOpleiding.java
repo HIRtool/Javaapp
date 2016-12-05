@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashSet;
 
 public class DBOpleiding {
@@ -62,6 +63,33 @@ public class DBOpleiding {
             DB.closeConnection(con);
             throw new DBException(ex);
         }        
+    }
+    public static int getOpleidingsduur(String oplNaam) throws DBException{
+        Connection con = null;
+        try
+        {
+            con = DB.getConnection();
+            String sql = "SELECT opleidingsduur FROM Opleiding WHERE OplNaam = ?";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setString(1, oplNaam);
+            ResultSet srs = stmt.executeQuery(sql);
+            int opleidingsduur = srs.getInt("opleidingsduur");
+            DB.closeConnection(con);
+            
+            return opleidingsduur;
+            
+        } catch (DBException dbe)
+        {
+            dbe.printStackTrace();
+            DB.closeConnection(con);
+            throw dbe;
+        }     
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+            DB.closeConnection(con);
+            throw new DBException(ex);
+        }
     }
     public static HashSet<String> getOpleidingen(String faculteit) throws DBException{
         Connection con = null;

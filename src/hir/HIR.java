@@ -14,6 +14,9 @@ public class HIR {
         Date b = new Date(2016, 21, 11);
         Slot a = new Slot(15, b, Slot.Moment.NaMiddag);
         System.out.println(a .toString());
+        ExamenGUI c = new ExamenGUI();
+        c.show();
+        c.setFaculteitLijst();
         
         
         
