@@ -1,5 +1,6 @@
 package hir;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 public abstract class Assistent {
@@ -8,7 +9,7 @@ public abstract class Assistent {
     private String assVoornaam;
     private String assAchternaam;
     private Prof leidingGevendeProf;
-    private HashSet<ExamenSessie> toegewezenSessies = new HashSet<>();
+    private ArrayList<ExamenSessie> toegewezenSessies = new ArrayList<>();
     private boolean isVrij;
 
     public Assistent(int aNr, String assVoornaam, String assAchternaam, Prof leidingGevendeProf) {
@@ -20,6 +21,18 @@ public abstract class Assistent {
     }
 
     //Gaat na of de assistent al genoeg examensessies heeft bijgewoond
+    boolean isStatusVrij(){
+        return isVrij = toegewezenSessies.size() < maxSurveillanties();
+    }
+    boolean isSlotnrVrij( int slotnr, Assistent b){
+        for(ExamenSessie a : b.getToegewezenSessies()){
+            if(a.getSlot().getSlotNr()  == slotnr){
+                return false;
+            }
+                
+        }
+        return true;
+    }
     private void setStatusVrij(){
         isVrij = toegewezenSessies.size() < maxSurveillanties();
     }
@@ -68,6 +81,14 @@ public abstract class Assistent {
 
     public void setAssAchternaam(String assAchternaam) {
         this.assAchternaam = assAchternaam;
+    }
+
+    public ArrayList<ExamenSessie> getToegewezenSessies() {
+        return toegewezenSessies;
+    }
+
+    public void setToegewezenSessies(ArrayList<ExamenSessie> toegewezenSessies) {
+        this.toegewezenSessies = toegewezenSessies;
     }
     
     

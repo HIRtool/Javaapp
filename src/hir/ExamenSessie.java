@@ -9,13 +9,23 @@ public class ExamenSessie {
     private HashSet<Examen> Examens = new HashSet<>();
     private Lokaal toegewezenLokaal;
     private HashSet<Assistent> surveillanten = new HashSet<>();
+    private Slot slot;
 
     public ExamenSessie(int ESnr, int aantalStudenten, Lokaal toegewezenLokaal) {
         this.ESnr = ESnr;
         this.aantalStudenten = aantalStudenten;
         this.toegewezenLokaal = toegewezenLokaal;
+        this.slot = slot;
     }
 
+    public Slot getSlot() {
+        return slot;
+    }
+
+    public void setSlot(Slot slot) {
+        this.slot = slot;
+    }
+    
     public int getESnr() {
         return ESnr;
     }

@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashSet;
 
 public class DBAssistent {
@@ -64,6 +65,41 @@ public class DBAssistent {
             throw new DBException(ex);
         }        
     }
+    public static ArrayList<Assistent> getAssistenten() throws DBException{
+        Connection con = null;
+        try
+        {
+            con = DB.getConnection();
+            String sql = "SELECT Anr FROM Assistent";
+             PreparedStatement stmt = con.prepareStatement(sql);
+             ResultSet srs = stmt.executeQuery();
+             
+             ArrayList<Assistent> assistentenLijst = new ArrayList<>();
+             assistentenLijst.add(getAssistent(srs.getInt("Anr")));
+             return assistentenLijst;
+            
+                 
+             }
+                 
+             
+             
+        
+     catch (DBException dbe)
+        {
+            dbe.printStackTrace();
+            DB.closeConnection(con);
+            throw dbe;
+        }     
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+            DB.closeConnection(con);
+            throw new DBException(ex);
+        } 
+    
+    
+}
+    
     
     
 }
