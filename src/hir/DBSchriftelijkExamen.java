@@ -8,7 +8,7 @@ import java.sql.Statement;
 public class DBSchriftelijkExamen {
     
     //
-    public static SchriftelijkExamen getSchriftelijkExamen(int exNr) throws DBException
+    /*public static SchriftelijkExamen getSchriftelijkExamen(int exNr) throws DBException
     {
         Connection con = null;
         try
@@ -63,6 +63,6 @@ public class DBSchriftelijkExamen {
             DB.closeConnection(con);
             throw new DBException(ex);
         }        
-    }
+    }*/
     
 }

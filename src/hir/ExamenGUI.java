@@ -9,16 +9,16 @@ import javax.swing.ListModel;
 
 public class ExamenGUI extends javax.swing.JFrame {
 
-    
+    /*
     public ExamenGUI() {
         initComponents();
-        
+        */
     }
     
     
    
     
-
+/*
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -316,3 +316,5 @@ public class ExamenGUI extends javax.swing.JFrame {
     private javax.swing.JTextField modelTrajectJaar;
     // End of variables declaration//GEN-END:variables
 }
+*/
+

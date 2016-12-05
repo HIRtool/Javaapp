@@ -8,7 +8,7 @@ import java.sql.Statement;
 public class DBExamen {
     
     //
-    public static Examen getExamen(int exNr) throws DBException
+   /* public static Examen getExamen(int exNr) throws DBException
     {
         Connection con = null;
         try
@@ -61,6 +61,6 @@ public class DBExamen {
             DB.closeConnection(con);
             throw new DBException(ex);
         }        
-    }
+    }*/
     
 }
