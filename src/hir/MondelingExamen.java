@@ -7,8 +7,8 @@ public class MondelingExamen extends Examen {
     private int maxAantalStudenten;
     private HashSet<Slot> toegewezenSlots = new HashSet<>();
 
-    public MondelingExamen(int maxAantalStudenten, int exNr, String exNaam, int examenKans, int aantalStudenten) {
-        super(exNr, exNaam, examenKans, aantalStudenten);
+    public MondelingExamen(int maxAantalStudenten, int exNr, String exNaam, int examenKans, int aantalStudenten, Opleiding opl) {
+        super(exNr, exNaam, examenKans, aantalStudenten, opl);
         this.maxAantalStudenten = maxAantalStudenten;
     }
 

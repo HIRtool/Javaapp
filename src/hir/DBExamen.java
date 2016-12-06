@@ -1,66 +1,193 @@
 package hir;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.HashSet;
 
 public class DBExamen {
     
-    //
-   /* public static Examen getExamen(int exNr) throws DBException
+    //Leest alle schriftelijke examens in en maakt er een lijst van Examens van
+    public static HashSet<Examen> getSchriftelijkExamens() throws DBException
     {
         Connection con = null;
         try
         {
             con = DB.getConnection();
-            String sql = "SELECT * FROM Examen WHERE ExNr = ?";
-            PreparedStatement stmt = con.prepareStatement(sql);
+            Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+                                                 ResultSet.CONCUR_READ_ONLY);
 
-            stmt.setInt(1, exNr);
-
-                        
-            ResultSet srs = stmt.executeQuery();
+            String sql = "Select * From SchriftelijkExamen se, Examen e Where se.ExNr = e.ExNr";
+            ResultSet srs = stmt.executeQuery(sql);
+                                 
+            int exNr, exKans, aantalStudenten;
+            String exNaam;
+            SchriftelijkExamen.Soort soort;
+            Opleiding opl;
+            HashSet schriftelijkeExamens = new HashSet<>();
             
-            String examenNaam, oplOndNaam; 
-            int examenKans, aantalStudenten;
-            
-            if (srs.next())
-            {
+            while (srs.next()){
                 exNr = srs.getInt("ExNr");
-                examenNaam = srs.getString("ExamenNaam");
-                examenKans = srs.getInt("ExamenKans");
+                exNaam = srs.getString("ExamenNaam");
+                exKans = srs.getInt("ExamenKans");
                 aantalStudenten = srs.getInt("Aantal_Studenten");
-                oplOndNaam = srs.getString("OplOndNaam");
+                opl = DBOpleiding.getOpleiding(srs.getString("OplOndNaam")) ;
+                if (srs.getInt("Soort")==1){
+                    soort = SchriftelijkExamen.Soort.OpenBoek;
+                }
+                else{
+                    soort = SchriftelijkExamen.Soort.GeslotenBoek;
+                }
                 
+                SchriftelijkExamen se = new SchriftelijkExamen(soort, exNr, exNaam, exKans, aantalStudenten, opl);
+                schriftelijkeExamens.add(se);
             }
-            else {
-                DB.closeConnection(con);
-                return null;
-            }
+               
             
-            Opleidingsonderdeel oplOnd = DBOpleidingsOnderdeel.getOpleidingsonderdeel(oplOndNaam);
-            Examen ex = new Examen(exNr, examenNaam, examenKans, aantalStudenten);
-            if(fac.hasVakgroep(vakgroep))
-            {
                 DB.closeConnection(con);
-                return vakgroep;
-            }
-            else
-            {
-                fac.addVakgroep(vakgroep);
-                DB.closeConnection(con);
-                return vakgroep;
-            }
-            
+                return schriftelijkeExamens;
             
         }
+        catch (DBException dbe)
+        {
+            dbe.printStackTrace();
+            DB.closeConnection(con);
+            throw dbe;
+        }     
         catch (Exception ex)
         {
             ex.printStackTrace();
             DB.closeConnection(con);
             throw new DBException(ex);
-        }        
-    }*/
+        }             
+    }
     
+    //Leest alle mondelinge examens in en maakt er een lijst van Examens van
+    public static HashSet<Examen> getMondelingExamens() throws DBException
+    {
+        Connection con = null;
+        try
+        {
+            con = DB.getConnection();
+            Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+                                                 ResultSet.CONCUR_READ_ONLY);
+
+            String sql = "Select * From MondelingExamen me, Examen e Where me.ExNr = e.ExNr";
+            ResultSet srs = stmt.executeQuery(sql);
+                                 
+            int exNr, exKans, aantalStudenten, maxAantalStudenten;
+            String exNaam;
+            Opleiding opl;
+            HashSet mondelingeExamens = new HashSet<>();
+            
+            while (srs.next()){
+                exNr = srs.getInt("ExNr");
+                exNaam = srs.getString("ExamenNaam");
+                exKans = srs.getInt("ExamenKans");
+                aantalStudenten = srs.getInt("Aantal_Studenten");
+                opl = DBOpleiding.getOpleiding(srs.getString("OplOndNaam")) ;
+                maxAantalStudenten = srs.getInt("Max_Aantal_Studenten");
+                
+                MondelingExamen me = new MondelingExamen(maxAantalStudenten, exNr, exNaam, exKans, aantalStudenten, opl);
+                mondelingeExamens.add(me);
+            }
+               
+            
+                DB.closeConnection(con);
+                return mondelingeExamens;
+            
+        }
+        catch (DBException dbe)
+        {
+            dbe.printStackTrace();
+            DB.closeConnection(con);
+            throw dbe;
+        }     
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+            DB.closeConnection(con);
+            throw new DBException(ex);
+        }             
+    }
+    
+    //Leest alle  examens in en maakt er een lijst van Examens van
+    public static HashSet<Examen> getExamens() throws DBException
+    {
+        Connection con = null;
+        try
+        {
+            con = DB.getConnection();
+            Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+                                                 ResultSet.CONCUR_READ_ONLY);
+
+            String sql = "Select  e.ExNr, " +
+                                "e.ExamenNaam, " +
+                                "e.ExamenKans, " +
+                                "e.Aantal_Studenten, " +
+                                "e.OplOndNaam, " +
+                                "Case WHEN me.ExNr is not null THEN \"Mondeling\" " +
+                                     "WHEN se.ExNr is not null THEN \"Schriftelijk\" " +
+                                "END \"Type Examen\", " +
+                                "me.Max_Aantal_Studenten, " +
+                                "se.Soort " +
+                        "From Examen e " +
+                        "left join MondelingExamen me " +
+                        "on me.ExNr = e.ExNr " +
+                        "left join SchriftelijkExamen se " +
+                        "on se.ExNr = e.ExNr";
+            ResultSet srs = stmt.executeQuery(sql);
+                                 
+            int exNr, exKans, aantalStudenten, maxAantalStudenten;
+            String exNaam;
+            SchriftelijkExamen.Soort soort;
+            Opleiding opl;
+            HashSet examens = new HashSet<>();
+            
+            while (srs.next()){
+                exNr = srs.getInt("ExNr");
+                exNaam = srs.getString("ExamenNaam");
+                exKans = srs.getInt("ExamenKans");
+                aantalStudenten = srs.getInt("Aantal_Studenten");
+                opl = DBOpleiding.getOpleiding(srs.getString("OplOndNaam")) ;
+                if (srs.getString("Type Examen").equalsIgnoreCase("Schriftelijk")){
+                    if (srs.getInt("Soort")==1){
+                        soort = SchriftelijkExamen.Soort.OpenBoek;
+                    }
+                    else{
+                        soort = SchriftelijkExamen.Soort.GeslotenBoek;
+                    }
+                    SchriftelijkExamen se = new SchriftelijkExamen(soort, exNr, exNaam, exKans, aantalStudenten, opl);
+                    examens.add(se);
+                }
+                else {
+                    maxAantalStudenten = srs.getInt("Max_Aantal_Studenten");
+                
+                    MondelingExamen me = new MondelingExamen(maxAantalStudenten, exNr, exNaam, exKans, aantalStudenten, opl);
+                    examens.add(me);
+                }
+                
+            }
+               
+            
+                DB.closeConnection(con);
+                return examens;
+            
+            
+                      
+            
+        }
+        catch (DBException dbe)
+        {
+            dbe.printStackTrace();
+            DB.closeConnection(con);
+            throw dbe;
+        }     
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+            DB.closeConnection(con);
+            throw new DBException(ex);
+        }             
+    }
 }
