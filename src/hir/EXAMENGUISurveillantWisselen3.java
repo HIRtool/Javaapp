@@ -9,12 +9,12 @@ package hir;
  *
  * @author Ugent
  */
-public class EXAMENGUIGOEDKEURING extends javax.swing.JFrame {
-private EXAMENGUIWIJZEGEN examenGuiWijzigen;
+public class EXAMENGUISurveillantWisselen3 extends javax.swing.JFrame {
+private EXAMENGUISurveillantWisselen2 examenGuiWijzigen;
     /**
      * Creates new form EXAMENGUIGOEDKEURING
      */
-    public EXAMENGUIGOEDKEURING() {
+    public EXAMENGUISurveillantWisselen3() {
         initComponents();
         this.examenGuiWijzigen = examenGuiWijzigen;
     }

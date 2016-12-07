@@ -1,6 +1,7 @@
 package hir;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.HashSet;
@@ -177,6 +178,67 @@ public class DBExamen {
                       
             
         }
+        catch (DBException dbe)
+        {
+            dbe.printStackTrace();
+            DB.closeConnection(con);
+            throw dbe;
+        }     
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+            DB.closeConnection(con);
+            throw new DBException(ex);
+        }             
+    }
+    
+    public static String getSoortExamen(String oplOndNaam) throws DBException{
+         Connection con = null;
+        try
+        {
+            con = DB.getConnection();
+           
+
+            String sql = "Select  e.ExNr, " +
+                                
+                                "Case WHEN me.ExNr is not null THEN \"Mondeling\" " +
+                                     "WHEN se.ExNr is not null THEN \"Schriftelijk\" " +
+                                "END \"Type Examen\", " +
+                                "me.Max_Aantal_Studenten, " +
+                                "se.Soort " +
+                        "From Examen e " +
+                        "left join MondelingExamen me " +
+                        "on me.ExNr = e.ExNr " +
+                        "left join SchriftelijkExamen se " +
+                        "on se.ExNr = e.ExNr" +
+                        "Where e.OplOndNaam = ?";
+            PreparedStatement stmt = con.prepareStatement(sql);
+
+            stmt.setString(1, oplOndNaam);
+            
+            ResultSet srs = stmt.executeQuery();
+                                 
+            
+            String exSoort;
+                        
+            if(srs.next()){
+                exSoort = srs.getString("Type Examen");
+                }
+            else{
+                DB.closeConnection(con);
+                return "Geen examen";
+            }
+             DB.closeConnection(con);
+                return exSoort;             
+            }
+               
+            
+               
+            
+            
+                      
+            
+        
         catch (DBException dbe)
         {
             dbe.printStackTrace();

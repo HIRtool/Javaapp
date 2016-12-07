@@ -70,7 +70,7 @@ public class DBFaculteit {
 
             HashSet<String> faculteiten = new HashSet<String>();
             while (srs.next())
-                faculteiten.add(getFaculteit(srs.getString("FacNaam")).getFacNaam());
+                faculteiten.add(srs.getString("FacNaam"));
             
             DB.closeConnection(con);
             return faculteiten;

@@ -56,17 +56,21 @@ public class DBOpleidingsOnderdeel {
             throw new DBException(ex);
         }        
     }
-    public static HashSet<String> getOpleidingsOnderdelen(int modelTrajectJaar, String faculteitNaam) throws DBException{
+    public static HashSet<String> getOpleidingsOnderdelen(int semester, String oplNaam) throws DBException{
         Connection con = null;
         try{
             con = DB.getConnection();
-            Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
-                                                 ResultSet.CONCUR_READ_ONLY);
             
             String sql = "SELECT OplOndNaam "+
                          "FROM Opleidingsonderdeel "+
-                         "WHERE modeltrajectjaar = " + modelTrajectJaar + "AND FacNaam = " + faculteitNaam;
-            ResultSet srs = stmt.executeQuery(sql);
+                         "WHERE semester = ? AND OplComNaam = ?";
+            PreparedStatement stmt = con.prepareStatement(sql);
+
+            stmt.setInt(1, semester);
+            stmt.setString(2, oplNaam);
+            
+            ResultSet srs = stmt.executeQuery();
+            
             HashSet<String> opleidingsonderdelen = new HashSet<>();
             
             while(srs.next()){
@@ -95,12 +99,15 @@ public class DBOpleidingsOnderdeel {
         int semester;
         try{
             con = DB.getConnection();
-            Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
-                                                 ResultSet.CONCUR_READ_ONLY);
+            
             String sql = "SELECT semester"+
                          "FROM Opleidingsonderdeel "+
-                         "WHERE OplOndNaam = " + opleidingsonderdeelnaam;
-            ResultSet srs = stmt.executeQuery(sql);
+                         "WHERE OplOndNaam = ?";
+            PreparedStatement stmt = con.prepareStatement(sql);
+
+            stmt.setString(1, opleidingsonderdeelnaam);
+            
+            ResultSet srs = stmt.executeQuery();
            return   semester= srs.getInt("semester");
     } catch (DBException dbe)
         {
@@ -118,17 +125,30 @@ public class DBOpleidingsOnderdeel {
 }
     public static int getAantalStudenten(String opleidingsonderdeelnaam) throws DBException{
         Connection con = null;
-        int AantalStudenten;
+        int aantalStudenten;
         try{
             con = DB.getConnection();
-            Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
-                                                 ResultSet.CONCUR_READ_ONLY);
+            
             String sql = "SELECT aantal_studenten "+
                          "FROM Opleidingsonderdeel "+
-                         "WHERE  OplOndNaam = " + opleidingsonderdeelnaam;
-            ResultSet srs = stmt.executeQuery(sql);
+                         "WHERE  OplOndNaam = ?" ;
+            PreparedStatement stmt = con.prepareStatement(sql);
+
+            
+            stmt.setString(1, opleidingsonderdeelnaam);
+            
+            ResultSet srs = stmt.executeQuery();
+            if (srs.next())
+            {
+                aantalStudenten = srs.getInt("aantal_studenten");
+                
+            }
+            else {
+                DB.closeConnection(con);
+                return 0;}
+            
             DB.closeConnection(con);
-            return AantalStudenten = srs.getInt("Aantal_Studenten");
+            return aantalStudenten;
             
             
         
@@ -147,17 +167,25 @@ public class DBOpleidingsOnderdeel {
 }
     public static String getVerantwoordelijkeLesgever(String opleidingsNaam) throws DBException{
         Connection con = null;
-        String prof = null;
+        String prof;
         try{
             con = DB.getConnection();
-            Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
-                                                 ResultSet.CONCUR_READ_ONLY);
-            String sql = "SELECT Pnr  " +
+            
+            String sql = "SELECT Pnr " +
                          "FROM Opleidingsonderdeel "+
-                         "WHERE OplOndNaam = " + opleidingsNaam;
-            ResultSet srs = stmt.executeQuery(sql);
+                         "WHERE OplOndNaam = ?";
+            PreparedStatement stmt = con.prepareStatement(sql);
+
+            stmt.setString(1, opleidingsNaam);
+            
+            ResultSet srs = stmt.executeQuery();
+            if(srs.next()){
+            prof = DBProf.getProf(srs.getInt("Pnr")).getProfVoornaam() + " " + DBProf.getProf(srs.getInt("Pnr")).getProfAchternaam();
+            } else{
+                return null;
+            }
             DB.closeConnection(con);
-           return  prof = DBProf.getProf(srs.getInt("Pnr")).getProfVoornaam() + DBProf.getProf(srs.getInt("Pnr")).getProfAchternaam();
+            return  prof ;
            
            
     

@@ -53,6 +53,12 @@ public class Slot {
         return this.datum.getDate() + "/" + this.datum.getMonth() + "/" + this.datum.getYear() + " " + this.moment;
     } 
             
-    
+    public Slot fromString(String slotString) throws DBException{
+        for(Slot a : DBSlot.loadSlots())
+            if(a.toString().equals(slotString)){
+                return a;
+            }
+        return null;
+    }
     
 }

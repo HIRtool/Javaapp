@@ -1,5 +1,7 @@
 package hir;
 
+import java.util.HashSet;
+
 public class Lokaal {
     
     private String lokaalNaam;
@@ -38,6 +40,12 @@ public class Lokaal {
     public String toString(){
     return this.getLokaalNaam() + " (" + this.getCapaciteit() + ")";
 }
+    public HashSet<Lokaal> LokalenUpdaten() throws DBException{
+        HashSet<Lokaal> vrijeLokalen = new HashSet<>();
+        vrijeLokalen.addAll(DBLokaal.getLokalen());
+        
+        
+    }
     
 }
     

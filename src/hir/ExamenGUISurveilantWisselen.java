@@ -15,12 +15,12 @@ import javax.swing.JTextField;
  *
  * @author matthieu
  */
-public class ExamenGUI2 extends javax.swing.JFrame {
+public class ExamenGUISurveilantWisselen extends javax.swing.JFrame {
 
     /**
      * Creates new form ExamenGUI2
      */
-    public ExamenGUI2() {
+    public ExamenGUISurveilantWisselen() {
         initComponents();
     }
 
@@ -115,7 +115,7 @@ public class ExamenGUI2 extends javax.swing.JFrame {
     }//GEN-LAST:event_assistenNummerActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       EXAMENGUIWIJZEGEN a = new EXAMENGUIWIJZEGEN();
+       EXAMENGUISurveillantWisselen2 a = new EXAMENGUISurveillantWisselen2();
        a.show();
        
        

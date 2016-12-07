@@ -12,13 +12,13 @@ import javax.swing.DefaultListModel;
  *
  * @author Ugent
  */
-public class EXAMENGUIWIJZEGEN extends javax.swing.JFrame {
-    private ExamenGUI2 kop;
+public class EXAMENGUISurveillantWisselen2 extends javax.swing.JFrame {
+    private ExamenGUISurveilantWisselen kop;
 
     /**
      * Creates new form EXAMENGUIWIJZEGEN
      */
-    public EXAMENGUIWIJZEGEN() {
+    public EXAMENGUISurveillantWisselen2() {
         initComponents();
         
     }
@@ -91,7 +91,7 @@ public class EXAMENGUIWIJZEGEN extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-      EXAMENGUIGOEDKEURING a = new EXAMENGUIGOEDKEURING();
+      EXAMENGUISurveillantWisselen3 a = new EXAMENGUISurveillantWisselen3();
       a.show();
     }//GEN-LAST:event_jButton1ActionPerformed
 
