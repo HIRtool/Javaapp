@@ -43,7 +43,9 @@ public class Lokaal {
     public HashSet<Lokaal> LokalenUpdaten() throws DBException{
         HashSet<Lokaal> vrijeLokalen = new HashSet<>();
         vrijeLokalen.addAll(DBLokaal.getLokalen());
+        //@TODO: aanvullen
         
+        return null;
         
     }
     

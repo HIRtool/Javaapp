@@ -73,7 +73,7 @@ public class DBLokaal {
         }
 
     }
-    public static Lokaal getLokaal(String lokaalNaam) throws SQLException{
+    public static Lokaal getLokaal(String lokaalNaam) throws SQLException, DBException{
          Connection con = null;
          try {
             con = DB.getConnection();

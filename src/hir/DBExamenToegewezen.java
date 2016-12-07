@@ -10,22 +10,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 public class DBExamenToegewezen {
-    public static boolean slotVrijVoorOpleiding(String oplNaam, int semester, Slot a) throws DBException{
-        HashSet<String> vakken = new HashSet<>();
-        vakken = DBOpleidingsOnderdeel.getOpleidingsOnderdelen(semester, oplNaam);
-        int exNr;
-        HashSet<Integer> slotNrs = new HashSet<>();
-        for(String opl: vakken){
-          exNr = getExNr(opl);
-          slotNrs.addAll(checkSlotNrs(exNr));
-        }
-        if (slotNrs.contains(a)){
-            return false;
-        }
-        else{
-            return true;
-        }
-    }
     
     public static int getExNr(String oplOndNaam)throws DBException{
         Connection con = null;

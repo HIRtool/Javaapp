@@ -1,8 +1,7 @@
 
 package hir;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 
 
@@ -295,7 +294,7 @@ public class ExamenGUI extends javax.swing.JFrame {
         try{ 
         setAantalStudenten(opleidingsOnderdeel);
         setVerantwoordelijkeLesgever(opleidingsOnderdeel);
-        //setSoortExamen(opleidingsOnderdeel);
+        setSoortExamen(opleidingsOnderdeel);
         setSlotlijst(opleiding, sem);
        } catch (DBException e){
            System.out.println("ERROR");
@@ -345,15 +344,15 @@ public class ExamenGUI extends javax.swing.JFrame {
         }
         OpleidingsonderdelenLijst.setModel(dlm3);
     }
-    public void setSlotlijst(String OplNaam, int semester) throws DBException{
+    public void setSlotlijst(String oplNaam, int semester) throws DBException{
         DefaultListModel dlm5 = new DefaultListModel();
-        for(Slot a : DBSlot.loadSlots()){
-            if(DBExamenToegewezen.slotVrijVoorOpleiding(OplNaam, semester, a)){
-                dlm5.addElement(a.toString());
-            }
-            
-        } slotLijst.setModel(dlm5);
+        ArrayList<Slot> slots =DBSlot.loadFreeSlots(oplNaam, semester, 1);
+        for(Slot a : slots){
+            dlm5.addElement(a.toString());
+        } 
+        slotLijst.setModel(dlm5);
     }
+    
     public int getAantalInschrijvingen(){
         return Integer.parseInt(aantalInschrijvingen.getText().trim());
     }
@@ -385,7 +384,7 @@ public class ExamenGUI extends javax.swing.JFrame {
     }
     
     public void setSoortExamen(String oplOndNaam) throws DBException{
-        SoortExamen.setText(DBExamen.getSoortExamen(oplOndNaam));
+        SoortExamen.setText(DBExamen.getSoortExamen(oplOndNaam,1));
     }
     
   

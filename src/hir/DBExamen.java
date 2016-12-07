@@ -192,14 +192,14 @@ public class DBExamen {
         }             
     }
     
-    public static String getSoortExamen(String oplOndNaam) throws DBException{
+    public static String getSoortExamen(String oplOndNaam, int exKans) throws DBException{
          Connection con = null;
         try
         {
             con = DB.getConnection();
            
 
-            String sql = "Select  e.ExNr, " +
+            String sql = "Select e.ExNr, " +
                                 
                                 "Case WHEN me.ExNr is not null THEN \"Mondeling\" " +
                                      "WHEN se.ExNr is not null THEN \"Schriftelijk\" " +
@@ -210,11 +210,12 @@ public class DBExamen {
                         "left join MondelingExamen me " +
                         "on me.ExNr = e.ExNr " +
                         "left join SchriftelijkExamen se " +
-                        "on se.ExNr = e.ExNr" +
-                        "Where e.OplOndNaam = ?";
+                        "on se.ExNr = e.ExNr " +
+                        "Where e.OplOndNaam = ? And e.ExamenKans = ?" ;
             PreparedStatement stmt = con.prepareStatement(sql);
 
             stmt.setString(1, oplOndNaam);
+            stmt.setInt(2, exKans);
             
             ResultSet srs = stmt.executeQuery();
                                  

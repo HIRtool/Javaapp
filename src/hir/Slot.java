@@ -1,5 +1,7 @@
 package hir;
 
+import static com.sun.org.apache.xalan.internal.lib.ExsltDatetime.date;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
 
@@ -50,7 +52,8 @@ public class Slot {
         this.examenLijst = examenLijst;
     }
     public String toString(){
-        return this.datum.getDate() + "/" + this.datum.getMonth() + "/" + this.datum.getYear() + " " + this.moment;
+        String datumString = new SimpleDateFormat("dd/MM/yyyy").format(datum);
+        return datumString + " " + this.moment;
     } 
             
     public Slot fromString(String slotString) throws DBException{
