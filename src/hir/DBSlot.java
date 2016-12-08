@@ -56,7 +56,7 @@ public class DBSlot {
         
     }
      
-     public static ArrayList<Slot> loadFreeSlots(String oplNaam, int semester, int exKans) throws DBException
+    public static ArrayList<Slot> loadFreeSlots(String oplNaam, int semester, int exKans) throws DBException
     {
         Connection con = null;
         try

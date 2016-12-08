@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -44,6 +46,53 @@ public class DBLokaal {
             throw new DBException(ex);
         }
 
+    }
+    
+    public static ArrayList<Lokaal> laadVrijeLokalen (int slotNr) throws DBException
+    {
+        Connection con = null;
+        try
+        {
+            con = DB.getConnection();
+            
+            String sql =    "Select * From Lokaal l Where l.LokaalNaam not in " +
+                            "(Select lt.LokaalNaam from LokaalToegewezen lt " +
+                            "join ExamenSessie es on es.Esnr = lt.Esnr Where es.SlotNr = ?)";
+            
+            
+            PreparedStatement stmt = con.prepareStatement(sql);
+
+            stmt.setInt(1, slotNr);
+            
+            String lokaalNaam, straat, gemeente;
+            int nummer, postcode, capaciteit;
+                        
+            ResultSet srs = stmt.executeQuery();
+            
+            ArrayList<Lokaal> lokalen = new ArrayList<>();
+            while (srs.next())
+            {
+                lokaalNaam = srs.getString("Lokaalnaam");
+                straat = srs.getString("straat");
+                gemeente = srs.getString("gemeente");
+                nummer = srs.getInt("nummer");
+                postcode = srs.getInt("postcode");
+                capaciteit = srs.getInt("capaciteit");
+                Adres b = new Adres(straat, nummer, postcode, gemeente);
+                Lokaal a = new Lokaal(lokaalNaam, b, capaciteit);
+                lokalen.add(a);
+            }
+            
+            
+            DB.closeConnection(con);
+            return lokalen;
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+            DB.closeConnection(con);
+            throw new DBException(ex);
+        }
     }
 
     public static int getCapaciteit(String lokaalNaam) throws DBException {
@@ -118,7 +167,7 @@ public class DBLokaal {
             throw new DBException(ex);
         }
     }
-    public static void LokalenBoeken(List<Lokaal> lokalen, int esnr) throws SQLException{
+    public static void LokalenBoeken(Lokaal l, int esnr) throws SQLException, DBException{
 
         Connection con = null;
         
@@ -129,14 +178,15 @@ public class DBLokaal {
             
         try
         {
+            con = DB.getConnection();
             con.setAutoCommit(false);
             srs = con.prepareStatement(sql);
             
-            for (Lokaal lok : lokalen){
-                srs.setString(1, lok.getLokaalNaam());
-                srs.setInt(2, esnr);
-                srs.executeUpdate();
-            }
+            
+            srs.setString(1, l.getLokaalNaam());
+            srs.setInt(2, esnr);
+            srs.executeUpdate();
+            
             con.commit();
         }
         catch (SQLException ex)
@@ -155,6 +205,7 @@ public class DBLokaal {
                 srs.close();
             }
             con.setAutoCommit(true);
+            DB.closeConnection(con);
         } 
     }
     /*public static Lokaal getLokaal(String lokaalNaam) throws DBException{

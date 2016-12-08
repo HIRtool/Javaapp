@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 
 
 
@@ -145,6 +146,11 @@ public class ExamenGUI extends javax.swing.JFrame {
         jScrollPane5.setViewportView(lokaalLijst);
 
         LokaalSubmit.setText("Submit");
+        LokaalSubmit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LokaalSubmitActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -286,7 +292,8 @@ public class ExamenGUI extends javax.swing.JFrame {
             Slot a = getSlot();
             int exNr = DBExamen.getExamenNr(getOpleidingsOnderdeel(), 1);
             DBExamenToegewezen.SlotToewijzen(exNr, a);
-            setLokaalLijst();
+            setLokaalLijst(a.getSlotNr());
+            
         } catch (DBException ex) {
             System.out.println("ERROR");
         } catch (SQLException ex) {
@@ -352,6 +359,20 @@ public class ExamenGUI extends javax.swing.JFrame {
     private void semesterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_semesterActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_semesterActionPerformed
+
+    private void LokaalSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LokaalSubmitActionPerformed
+        Slot a;
+        try {
+            a = getSlot();
+            int exNr = DBExamen.getExamenNr(getOpleidingsOnderdeel(), 1);
+            lokalenBoeken(getLokalen(), getAantalInschrijvingen(), a.getSlotNr(), exNr);
+        } catch (DBException ex) {
+            Logger.getLogger(ExamenGUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(ExamenGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_LokaalSubmitActionPerformed
     
     public void setFaculteitLijst() throws DBException{
         DefaultListModel dlm = new DefaultListModel();
@@ -445,18 +466,45 @@ public class ExamenGUI extends javax.swing.JFrame {
        return lokaalLijst.getSelectedValuesList();
     }
     
-    public void setLokaalLijst() throws DBException{
+    public void setLokaalLijst(int slotNr) throws DBException{
         
         DefaultListModel dlm2 = new DefaultListModel();
-        for(Lokaal lokaal : DBLokaal.getLokalen()){
+        for(Lokaal lokaal : DBLokaal.laadVrijeLokalen(slotNr)){
            
             dlm2.addElement(lokaal);
         }
         lokaalLijst.setModel(dlm2);
     }
     
-    public void lokalenBoeken(List<Lokaal> lokalen, int teVerdelenStudenten, int slotNr, int exNr){
+    public void lokalenBoeken(List<Lokaal> lokalen, int teVerdelenStudenten, int slotNr, int exNr) throws SQLException, DBException{
+        int totCapGekozenLokalen = 0;
+        boolean overcapaciteit = false;
+        for (int i = 0 ; i < lokalen.size(); i++){
+            Lokaal l = lokalen.get(i);
+            totCapGekozenLokalen += l.getCapaciteit();
+            if (!overcapaciteit)
+                overcapaciteit = (i<lokalen.size() - 1 && totCapGekozenLokalen >= teVerdelenStudenten);
+        }
         
+        if (totCapGekozenLokalen < teVerdelenStudenten){
+            JOptionPane.showMessageDialog(this,"Te weinig lokalen geselecteerd","Lokaaltoewijzing error",JOptionPane.ERROR_MESSAGE);
+        } else if(overcapaciteit){
+            JOptionPane.showMessageDialog(this,"Te veel lokalen geselecteerd","Lokaaltoewijzing error",JOptionPane.ERROR_MESSAGE);
+        } else{
+            for (Lokaal lok : lokalen){
+                int aantalStudenten;
+                if(lok.getCapaciteit()<= teVerdelenStudenten){
+                    aantalStudenten = lok.getCapaciteit();
+                    teVerdelenStudenten -= lok.getCapaciteit();
+                } else {
+                    aantalStudenten = teVerdelenStudenten;
+                }
+                int esNr = DBExamenSessie.exSessieAanmaken(aantalStudenten, slotNr, exNr);
+                DBLokaal.LokalenBoeken(lok, esNr);
+            }
+            
+           
+        }
         
     }
   
