@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 public class DBLokaal {
 
@@ -117,30 +118,44 @@ public class DBLokaal {
             throw new DBException(ex);
         }
     }
-    public static void LokaalToewijzen(String lokaalNaam, int esnr) throws DBException{
+    public static void LokalenBoeken(List<Lokaal> lokalen, int esnr) throws SQLException{
 
         Connection con = null;
+        
+        PreparedStatement srs = null;
+        
+        String sql = "INSERT INTO BINFG11.LokaalToegewezen (LokaalNaam, Esnr) VALUES  (?,?)";
+        
+            
         try
         {
-            con = DB.getConnection();
+            con.setAutoCommit(false);
+            srs = con.prepareStatement(sql);
             
-            // create a Statement from the connection
-            Statement statement = con.createStatement();
-
-            // insert the data
-            
-            statement.executeUpdate("INSERT INTO LokaalToegewezen VALUES (LokaalNaam, Esnr) (" + lokaalNaam + ", " + esnr +")");
-            
-            
-            
-            DB.closeConnection(con);
+            for (Lokaal lok : lokalen){
+                srs.setString(1, lok.getLokaalNaam());
+                srs.setInt(2, esnr);
+                srs.executeUpdate();
+            }
+            con.commit();
         }
-        catch (Exception ex)
+        catch (SQLException ex)
         {
-            ex.printStackTrace();
-            DB.closeConnection(con);
-            throw new DBException(ex);
-        }  
+            System.out.println(ex.getMessage());
+            if (con != null){
+                try{
+                    System.err.print("Transaction is being rolled back");
+                    con.rollback();
+                } catch(SQLException excep){
+                    System.out.println(ex.getMessage());
+                }
+            }
+        } finally {
+            if (srs != null){
+                srs.close();
+            }
+            con.setAutoCommit(true);
+        } 
     }
     /*public static Lokaal getLokaal(String lokaalNaam) throws DBException{
         Connection con = null;

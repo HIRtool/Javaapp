@@ -18,9 +18,7 @@ public class HIR {
         c.show();
         c.setFaculteitLijst();
 
-        EXAMENGUILOKAAL d = new EXAMENGUILOKAAL();
-        //d.show();
-       // d.setLokaalLijst();
+        
         
         
         
