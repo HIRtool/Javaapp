@@ -408,7 +408,7 @@ public class ExamenGUI extends javax.swing.JFrame {
     }
     public void setOpleidingsonderdelenLijst(int sem, String opleiding) throws DBException{
         DefaultListModel dlm3 = new DefaultListModel();
-        for(String a: DBOpleidingsOnderdeel.getOpleidingsOnderdelen(sem, opleiding)){
+        for(String a: DBOpleidingsOnderdeel.getOngeplandeOpleidingsOnderdelen(sem, opleiding)){
             dlm3.addElement(a);
         }
         OpleidingsonderdelenLijst.setModel(dlm3);

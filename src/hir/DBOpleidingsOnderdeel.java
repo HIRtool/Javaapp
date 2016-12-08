@@ -56,18 +56,20 @@ public class DBOpleidingsOnderdeel {
             throw new DBException(ex);
         }        
     }
-    public static HashSet<String> getOpleidingsOnderdelen(int semester, String oplNaam) throws DBException{
+    public static HashSet<String> getOngeplandeOpleidingsOnderdelen(int semester, String oplNaam) throws DBException{
         Connection con = null;
         try{
             con = DB.getConnection();
             
-            String sql = "SELECT OplOndNaam "+
-                         "FROM Opleidingsonderdeel "+
-                         "WHERE semester = ? AND OplComNaam = ?";
+            String sql = "Select distinct e.OplOndNaam From Examen e " +
+                            "left join ExamenToegewezen et on e.ExNr = et.ExNr " +
+                            "join Opleidingsonderdeel oo on oo.OplOndNaam = e.OplOndNaam " +
+                            "join Bestaatuit bu on bu.OplOndNaam = oo.OplOndNaam " +
+                            "where et.ExNr is null and e.ExamenKans = 1 and bu.OplNaam = ? and oo.semester = ?";
             PreparedStatement stmt = con.prepareStatement(sql);
 
-            stmt.setInt(1, semester);
-            stmt.setString(2, oplNaam);
+            stmt.setInt(2, semester);
+            stmt.setString(1, oplNaam);
             
             ResultSet srs = stmt.executeQuery();
             
