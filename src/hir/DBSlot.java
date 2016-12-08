@@ -110,5 +110,13 @@ public class DBSlot {
         }
         
     }
+     
+    public static Slot fromString(String slotString) throws DBException{
+        for(Slot a : DBSlot.loadSlots())
+            if(a.toString().equals(slotString)){
+                return a;
+            }
+        return null;
+    }
     
 }

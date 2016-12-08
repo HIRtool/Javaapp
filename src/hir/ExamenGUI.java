@@ -1,7 +1,10 @@
 
 package hir;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 
 
@@ -243,8 +246,17 @@ public class ExamenGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-      EXAMENGUILOKAAL a = new EXAMENGUILOKAAL();
-      a.show();
+        try {
+            Slot a = getSlot();
+            int exNr = DBExamen.getExamenNr(getOpleidingsOnderdeel(), 1);
+            DBExamenToegewezen.SlotToewijzen(exNr, a);
+        } catch (DBException ex) {
+            System.out.println("ERROR");
+        } catch (SQLException ex) {
+            System.out.println("ERROR while writing to DB");
+        }
+        EXAMENGUILOKAAL a = new EXAMENGUILOKAAL();
+        //a.show();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void aantalInschrijvingenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aantalInschrijvingenActionPerformed
@@ -346,7 +358,7 @@ public class ExamenGUI extends javax.swing.JFrame {
     }
     public void setSlotlijst(String oplNaam, int semester) throws DBException{
         DefaultListModel dlm5 = new DefaultListModel();
-        ArrayList<Slot> slots =DBSlot.loadFreeSlots(oplNaam, semester, 1);
+        ArrayList<Slot> slots = DBSlot.loadFreeSlots(oplNaam, semester, 1);
         for(Slot a : slots){
             dlm5.addElement(a.toString());
         } 
@@ -366,6 +378,12 @@ public class ExamenGUI extends javax.swing.JFrame {
     }
     public String getFaculteit(){
       return FaculteitLijst.getSelectedValue();
+    }
+    
+    public Slot getSlot() throws DBException{
+        String slotString = slotLijst.getSelectedValue();
+        Slot a = DBSlot.fromString(slotString);
+        return a;
     }
        
     

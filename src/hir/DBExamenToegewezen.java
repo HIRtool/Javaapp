@@ -94,14 +94,15 @@ public class DBExamenToegewezen {
         {
             con = DB.getConnection();
             
-            // create a Statement from the connection
-            Statement statement = con.createStatement();
-
-            // insert the data
             int slotNr = slot.getSlotNr();
-            statement.executeUpdate("INSERT INTO ExamenToegewezen VALUES (ExNr, SlotNr) (" + exNr + ", " + slotNr +")");
+            String updateTableSQL = "INSERT INTO BINFG11.ExamenToegewezen(ExNr,SlotNr) VALUES (?,?)";
             
+            PreparedStatement preparedStatement = con.prepareStatement(updateTableSQL);
             
+            preparedStatement.setInt(1, exNr);
+            preparedStatement.setInt(2, slotNr);
+            // execute insert SQL statement
+            preparedStatement.executeUpdate();
             
             DB.closeConnection(con);
         }

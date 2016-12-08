@@ -198,7 +198,6 @@ public class DBExamen {
         {
             con = DB.getConnection();
            
-
             String sql = "Select e.ExNr, " +
                                 
                                 "Case WHEN me.ExNr is not null THEN \"Mondeling\" " +
@@ -218,8 +217,7 @@ public class DBExamen {
             stmt.setInt(2, exKans);
             
             ResultSet srs = stmt.executeQuery();
-                                 
-            
+             
             String exSoort;
                         
             if(srs.next()){
@@ -232,14 +230,47 @@ public class DBExamen {
              DB.closeConnection(con);
                 return exSoort;             
             }
-               
+        catch (DBException dbe)
+        {
+            dbe.printStackTrace();
+            DB.closeConnection(con);
+            throw dbe;
+        }     
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+            DB.closeConnection(con);
+            throw new DBException(ex);
+        }             
+    }
+    
+    public static int getExamenNr(String oplOndNaam, int exKans) throws DBException{
+         Connection con = null;
+        try
+        {
+            con = DB.getConnection();
+           
+            String sql = "Select ExNr " +
+                            "From Examen " +
+                            "Where OplOndNaam = ? And ExamenKans = ?" ;
+            PreparedStatement stmt = con.prepareStatement(sql);
+
+            stmt.setString(1, oplOndNaam);
+            stmt.setInt(2, exKans);
             
-               
+            int exNr;
             
-            
-                      
-            
-        
+            ResultSet srs = stmt.executeQuery();
+            if(srs.next()){
+                exNr = srs.getInt("ExNr");
+            } else {
+                DB.closeConnection(con);
+                throw new Exception("Examen niet gevonden voor Opleiding: " + oplOndNaam + " en examenkans " + exKans);
+            }
+                        
+            DB.closeConnection(con);
+            return exNr;             
+            }
         catch (DBException dbe)
         {
             dbe.printStackTrace();
