@@ -54,6 +54,11 @@ public class Prof {
     public void setAssistenten(HashSet<Assistent> assistenten) {
         this.assistenten = assistenten;
     }
+
+    @Override
+    public String toString() {
+        return profVoornaam + " " + profAchternaam;
+    }
     
     
     

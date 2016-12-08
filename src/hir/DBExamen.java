@@ -1,10 +1,14 @@
 package hir;
 
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import javax.sql.rowset.serial.SerialArray;
 
 public class DBExamen {
     
@@ -24,7 +28,7 @@ public class DBExamen {
             int exNr, exKans, aantalStudenten;
             String exNaam;
             SchriftelijkExamen.Soort soort;
-            Opleiding opl;
+            Opleidingsonderdeel oplOnd;
             HashSet schriftelijkeExamens = new HashSet<>();
             
             while (srs.next()){
@@ -32,7 +36,7 @@ public class DBExamen {
                 exNaam = srs.getString("ExamenNaam");
                 exKans = srs.getInt("ExamenKans");
                 aantalStudenten = srs.getInt("Aantal_Studenten");
-                opl = DBOpleiding.getOpleiding(srs.getString("OplOndNaam")) ;
+                oplOnd = DBOpleidingsOnderdeel.getOpleidingsonderdeel(srs.getString("OplOndNaam")) ;
                 if (srs.getInt("Soort")==1){
                     soort = SchriftelijkExamen.Soort.OpenBoek;
                 }
@@ -40,7 +44,7 @@ public class DBExamen {
                     soort = SchriftelijkExamen.Soort.GeslotenBoek;
                 }
                 
-                SchriftelijkExamen se = new SchriftelijkExamen(soort, exNr, exNaam, exKans, aantalStudenten, opl);
+                SchriftelijkExamen se = new SchriftelijkExamen(soort, exNr, exNaam, exKans, aantalStudenten, oplOnd);
                 schriftelijkeExamens.add(se);
             }
                
@@ -78,7 +82,7 @@ public class DBExamen {
                                  
             int exNr, exKans, aantalStudenten, maxAantalStudenten;
             String exNaam;
-            Opleiding opl;
+            Opleidingsonderdeel oplOnd;
             HashSet mondelingeExamens = new HashSet<>();
             
             while (srs.next()){
@@ -86,10 +90,10 @@ public class DBExamen {
                 exNaam = srs.getString("ExamenNaam");
                 exKans = srs.getInt("ExamenKans");
                 aantalStudenten = srs.getInt("Aantal_Studenten");
-                opl = DBOpleiding.getOpleiding(srs.getString("OplOndNaam")) ;
+                oplOnd = DBOpleidingsOnderdeel.getOpleidingsonderdeel(srs.getString("OplOndNaam")) ;
                 maxAantalStudenten = srs.getInt("Max_Aantal_Studenten");
                 
-                MondelingExamen me = new MondelingExamen(maxAantalStudenten, exNr, exNaam, exKans, aantalStudenten, opl);
+                MondelingExamen me = new MondelingExamen(maxAantalStudenten, exNr, exNaam, exKans, aantalStudenten, oplOnd);
                 mondelingeExamens.add(me);
             }
                
@@ -113,15 +117,13 @@ public class DBExamen {
     }
     
     //Leest alle  examens in en maakt er een lijst van Examens van
-    public static HashSet<Examen> getExamens() throws DBException
+    public static List<Examen> getExamens(List<Integer> exNrs) throws DBException
     {
         Connection con = null;
         try
         {
             con = DB.getConnection();
-            Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
-                                                 ResultSet.CONCUR_READ_ONLY);
-
+            
             String sql = "Select  e.ExNr, " +
                                 "e.ExamenNaam, " +
                                 "e.ExamenKans, " +
@@ -136,21 +138,36 @@ public class DBExamen {
                         "left join MondelingExamen me " +
                         "on me.ExNr = e.ExNr " +
                         "left join SchriftelijkExamen se " +
-                        "on se.ExNr = e.ExNr";
-            ResultSet srs = stmt.executeQuery(sql);
+                        "on se.ExNr = e.ExNr " +
+                        "where e.ExNr in (EXNRARRAY)";
+            
+            //stmt.setArray(1, con.createArrayOf("INT", exNrs.toArray(new Integer[exNrs.size()])));
+            
+            StringBuilder s = new StringBuilder();
+            s.append(exNrs.get(0));
+            for(int i=1;i<exNrs.size();i++){
+                s.append(",");
+                s.append(exNrs.get(i));
+            }
+            
+            sql = sql.replace("EXNRARRAY", s.toString());
+            
+            PreparedStatement stmt = con.prepareStatement(sql);
+            
+            ResultSet srs = stmt.executeQuery();
                                  
             int exNr, exKans, aantalStudenten, maxAantalStudenten;
             String exNaam;
             SchriftelijkExamen.Soort soort;
-            Opleiding opl;
-            HashSet examens = new HashSet<>();
+            Opleidingsonderdeel oplOnd;
+            List<Examen> examens = new ArrayList<>();
             
             while (srs.next()){
                 exNr = srs.getInt("ExNr");
                 exNaam = srs.getString("ExamenNaam");
                 exKans = srs.getInt("ExamenKans");
                 aantalStudenten = srs.getInt("Aantal_Studenten");
-                opl = DBOpleiding.getOpleiding(srs.getString("OplOndNaam")) ;
+                oplOnd = DBOpleidingsOnderdeel.getOpleidingsonderdeel(srs.getString("OplOndNaam")) ;
                 if (srs.getString("Type Examen").equalsIgnoreCase("Schriftelijk")){
                     if (srs.getInt("Soort")==1){
                         soort = SchriftelijkExamen.Soort.OpenBoek;
@@ -158,13 +175,13 @@ public class DBExamen {
                     else{
                         soort = SchriftelijkExamen.Soort.GeslotenBoek;
                     }
-                    SchriftelijkExamen se = new SchriftelijkExamen(soort, exNr, exNaam, exKans, aantalStudenten, opl);
+                    SchriftelijkExamen se = new SchriftelijkExamen(soort, exNr, exNaam, exKans, aantalStudenten, oplOnd);
                     examens.add(se);
                 }
                 else {
                     maxAantalStudenten = srs.getInt("Max_Aantal_Studenten");
                 
-                    MondelingExamen me = new MondelingExamen(maxAantalStudenten, exNr, exNaam, exKans, aantalStudenten, opl);
+                    MondelingExamen me = new MondelingExamen(maxAantalStudenten, exNr, exNaam, exKans, aantalStudenten, oplOnd);
                     examens.add(me);
                 }
                 
@@ -270,6 +287,48 @@ public class DBExamen {
                         
             DB.closeConnection(con);
             return exNr;             
+            }
+        catch (DBException dbe)
+        {
+            dbe.printStackTrace();
+            DB.closeConnection(con);
+            throw dbe;
+        }     
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+            DB.closeConnection(con);
+            throw new DBException(ex);
+        }             
+    }
+    
+    public static List<Integer> getOngeplandeExamenNrs(int semester, String oplNaam, int exKans)throws DBException{
+         Connection con = null;
+        try
+        {
+            con = DB.getConnection();
+           
+            String sql =    "Select e.ExNr From Examen e " +
+                            "left join ExamenToegewezen et on e.ExNr = et.ExNr " +
+                            "join Opleidingsonderdeel oo on oo.OplOndNaam = e.OplOndNaam " +
+                            "join Bestaatuit bu on bu.OplOndNaam = oo.OplOndNaam " +
+                            "where et.ExNr is null and e.ExamenKans = ? and bu.OplNaam = ? and oo.semester = ?" ;
+            PreparedStatement stmt = con.prepareStatement(sql);
+
+            stmt.setInt(1, exKans);
+            stmt.setString(2, oplNaam);
+            stmt.setInt(3, semester);
+            
+            ResultSet srs = stmt.executeQuery();
+            
+            List<Integer> ongeplandeExamenNrs = new ArrayList<>();
+            
+            while(srs.next()){
+                ongeplandeExamenNrs.add(srs.getInt("ExNr"));
+            } 
+                        
+            DB.closeConnection(con);
+            return ongeplandeExamenNrs;             
             }
         catch (DBException dbe)
         {

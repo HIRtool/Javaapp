@@ -64,20 +64,18 @@
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="68" max="-2" attributes="0"/>
-                      <Component id="jScrollPane3" min="-2" pref="402" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="73" max="-2" attributes="0"/>
-                      <Component id="OpleidingsOnderdeelSubmit" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel6" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="jScrollPane3" min="-2" pref="402" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="OpleidingsOnderdeelSubmit" min="-2" max="-2" attributes="0"/>
+                          </Group>
                           <Component id="VerantwoordelijkeLesgever" min="-2" pref="404" max="-2" attributes="0"/>
                           <Component id="aantalInschrijvingen" min="-2" pref="214" max="-2" attributes="0"/>
                           <Component id="SoortExamen" alignment="0" min="-2" pref="413" max="-2" attributes="0"/>
@@ -214,7 +212,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Opleidingsonderdelen: "/>
+        <Property name="text" type="java.lang.String" value="Examens:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="SlotSubmit">
@@ -291,12 +289,12 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JList" name="OpleidingsonderdelenLijst">
+        <Component class="javax.swing.JList" name="ExamenLijst">
           <Properties>
             <Property name="selectionMode" type="int" value="0"/>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Examen&gt;"/>
           </AuxValues>
         </Component>
       </SubComponents>

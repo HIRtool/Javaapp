@@ -7,8 +7,8 @@ public class SchriftelijkExamen extends Examen {
     private Soort soort;
     private Slot toegewezenSlot;
 
-    public SchriftelijkExamen(Soort soort, int exNr, String exNaam, int examenKans, int aantalStudenten, Opleiding opl) {
-        super(exNr, exNaam, examenKans, aantalStudenten, opl);
+    public SchriftelijkExamen(Soort soort, int exNr, String exNaam, int examenKans, int aantalStudenten, Opleidingsonderdeel oplOnd) {
+        super(exNr, exNaam, examenKans, aantalStudenten, oplOnd);
         this.soort = soort;
     }
 
@@ -26,6 +26,16 @@ public class SchriftelijkExamen extends Examen {
 
     public void setToegewezenSlot(Slot toegewezenSlot) {
         this.toegewezenSlot = toegewezenSlot;
+    }
+
+    @Override
+    public String toString() {
+        if (getExNaam().equals(getOpleidingOnderdeel().getOplOndNaam())){
+            return getExNaam() + " (Schriftelijk)";
+        } else {
+            return getOpleidingOnderdeel().getOplOndNaam() + " - " + getExNaam() + " (Schriftelijk)"; 
+        }
+        
     }
     
     

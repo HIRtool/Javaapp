@@ -6,14 +6,22 @@ public abstract class Examen {
     private String exNaam;
     private int examenKans;
     private int aantalStudenten;
-    private Opleiding opleiding;
+    private Opleidingsonderdeel opleidingOnderdeel;
 
-    public Examen(int exNr, String exNaam, int examenKans, int aantalStudenten, Opleiding opleiding) {
+    public Examen(int exNr, String exNaam, int examenKans, int aantalStudenten, Opleidingsonderdeel opleidingOnderdeel) {
         this.exNr = exNr;
         this.exNaam = exNaam;
         this.examenKans = examenKans;
         this.aantalStudenten = aantalStudenten;
-        this.opleiding = opleiding;
+        this.opleidingOnderdeel = opleidingOnderdeel;
+    }
+
+    public Opleidingsonderdeel getOpleidingOnderdeel() {
+        return opleidingOnderdeel;
+    }
+
+    public void setOpleidingOnderdeel(Opleidingsonderdeel opleidingOnderdeel) {
+        this.opleidingOnderdeel = opleidingOnderdeel;
     }
 
     public int getExNr() {

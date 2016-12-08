@@ -15,7 +15,7 @@ public class DBOpleidingsCommissie {
         {
             con = DB.getConnection();
             
-            String sql = "SELECT * FROM OpleidingsCommissie WHERE OplComNaam = ?";
+            String sql = "SELECT * FROM Opleidingscommissie WHERE OplComNaam = ?";
             PreparedStatement stmt = con.prepareStatement(sql);
 
             stmt.setString(1, oplComNaam);

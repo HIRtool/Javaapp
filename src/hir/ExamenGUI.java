@@ -46,7 +46,7 @@ public class ExamenGUI extends javax.swing.JFrame {
         OpleidingsLijst = new javax.swing.JList<>();
         jLabel8 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        OpleidingsonderdelenLijst = new javax.swing.JList<>();
+        ExamenLijst = new javax.swing.JList<>();
         jLabel9 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         VerantwoordelijkeLesgever = new javax.swing.JTextField();
@@ -67,7 +67,7 @@ public class ExamenGUI extends javax.swing.JFrame {
 
         jLabel1.setText("Opleiding:");
 
-        jLabel2.setText("Opleidingsonderdelen: ");
+        jLabel2.setText("Examens:");
 
         SlotSubmit.setText("Submit");
         SlotSubmit.addActionListener(new java.awt.event.ActionListener() {
@@ -96,8 +96,8 @@ public class ExamenGUI extends javax.swing.JFrame {
 
         jLabel8.setText("Semester");
 
-        OpleidingsonderdelenLijst.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane3.setViewportView(OpleidingsonderdelenLijst);
+        ExamenLijst.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane3.setViewportView(ExamenLijst);
 
         jLabel9.setText("Soort examen: ");
 
@@ -179,18 +179,16 @@ public class ExamenGUI extends javax.swing.JFrame {
                         .addComponent(jLabel3))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jLabel2)
-                        .addGap(68, 68, 68)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(73, 73, 73)
-                        .addComponent(OpleidingsOnderdeelSubmit))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4)
-                            .addComponent(jLabel6))
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel2))
                         .addGap(39, 39, 39)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(OpleidingsOnderdeelSubmit))
                             .addComponent(VerantwoordelijkeLesgever, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(aantalInschrijvingen, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(SoortExamen, javax.swing.GroupLayout.PREFERRED_SIZE, 413, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -332,7 +330,7 @@ public class ExamenGUI extends javax.swing.JFrame {
            int sem = getSemester(); 
            String opleiding = getOpleiding();
         try {
-            setOpleidingsonderdelenLijst(sem, opleiding);
+            setExamenLijst(sem, opleiding);
         } catch(DBException e){
             System.out.println("ERROR");
         }
@@ -344,16 +342,19 @@ public class ExamenGUI extends javax.swing.JFrame {
 
     private void OpleidingsOnderdeelSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OpleidingsOnderdeelSubmitActionPerformed
        String opleidingsOnderdeel = getOpleidingsOnderdeel();
+       Examen ex = getGeselecteerdExamen();
        String opleiding = getOpleiding();
        int sem = getSemester();
         try{ 
-        setAantalStudenten(opleidingsOnderdeel);
-        setVerantwoordelijkeLesgever(opleidingsOnderdeel);
-        setSoortExamen(opleidingsOnderdeel);
+        setAantalStudenten();
+        setVerantwoordelijkeLesgever();
+        setSoortExamen();
         setSlotlijst(opleiding, sem);
        } catch (DBException e){
            System.out.println("ERROR");
-       }
+       } catch (Exception ex1) {
+            Logger.getLogger(ExamenGUI.class.getName()).log(Level.SEVERE, null, ex1);
+        }
     }//GEN-LAST:event_OpleidingsOnderdeelSubmitActionPerformed
 
     private void semesterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_semesterActionPerformed
@@ -406,12 +407,12 @@ public class ExamenGUI extends javax.swing.JFrame {
     public String getOpleiding(){
         return OpleidingsLijst.getSelectedValue();
     }
-    public void setOpleidingsonderdelenLijst(int sem, String opleiding) throws DBException{
+    public void setExamenLijst(int sem, String opleiding) throws DBException{
         DefaultListModel dlm3 = new DefaultListModel();
-        for(String a: DBOpleidingsOnderdeel.getOngeplandeOpleidingsOnderdelen(sem, opleiding)){
-            dlm3.addElement(a);
+        for(Examen e: DBExamen.getExamens(DBExamen.getOngeplandeExamenNrs(sem, opleiding, 1))){
+            dlm3.addElement(e);
         }
-        OpleidingsonderdelenLijst.setModel(dlm3);
+        ExamenLijst.setModel(dlm3);
     }
     public void setSlotlijst(String oplNaam, int semester) throws DBException{
         DefaultListModel dlm5 = new DefaultListModel();
@@ -445,21 +446,33 @@ public class ExamenGUI extends javax.swing.JFrame {
        
     
     public String getOpleidingsOnderdeel(){
-        return OpleidingsonderdelenLijst.getSelectedValue();
-                }
+        return ExamenLijst.getSelectedValue().getOpleidingOnderdeel().getOplOndNaam();
+    }
+    
+    public Examen getGeselecteerdExamen(){
+        return ExamenLijst.getSelectedValue();
+    }
     /*public void setSemester(String opleidingsonderdeel) throws DBException{
         Semester.setText(Integer.toString(DBOpleidingsOnderdeel.getSemester(opleidingsonderdeel)));
     }*/
-    public void setAantalStudenten(String opleidingsonderdeel) throws DBException{
-       aantalInschrijvingen.setText(Integer.toString(DBOpleidingsOnderdeel.getAantalStudenten(opleidingsonderdeel)));
-       
+    public void setAantalStudenten() throws DBException{
+       //aantalInschrijvingen.setText(Integer.toString(DBOpleidingsOnderdeel.getAantalStudenten(opleidingsonderdeel)));
+       aantalInschrijvingen.setText(Integer.toString(getGeselecteerdExamen().getAantalStudenten()));
     }
-    public void setVerantwoordelijkeLesgever(String opleidingsonderdeel) throws DBException{
-         VerantwoordelijkeLesgever.setText(DBOpleidingsOnderdeel.getVerantwoordelijkeLesgever(opleidingsonderdeel));
+    public void setVerantwoordelijkeLesgever() throws DBException{
+         //VerantwoordelijkeLesgever.setText(DBOpleidingsOnderdeel.getVerantwoordelijkeLesgever(opleidingsonderdeel));
+         VerantwoordelijkeLesgever.setText(getGeselecteerdExamen().getOpleidingOnderdeel().getVerantwoordelijkeLesgever().toString());
     }
     
-    public void setSoortExamen(String oplOndNaam) throws DBException{
-        SoortExamen.setText(DBExamen.getSoortExamen(oplOndNaam,1));
+    public void setSoortExamen() throws DBException, Exception{
+        //SoortExamen.setText(DBExamen.getSoortExamen(oplOndNaam,1));
+        if(getGeselecteerdExamen() instanceof MondelingExamen){
+            SoortExamen.setText("Mondeling");
+        }else if(getGeselecteerdExamen() instanceof SchriftelijkExamen){
+            SoortExamen.setText("Schriftelijk");
+        }else{
+            throw new Exception("Type van geslecteerd examen kan niet bepaald worden");
+        }
     }
     
     public List<Lokaal> getLokalen(){
@@ -510,13 +523,13 @@ public class ExamenGUI extends javax.swing.JFrame {
   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JList<Examen> ExamenLijst;
     private javax.swing.JList<String> FaculteitLijst;
     private javax.swing.JButton FaculteitSubmit;
     private javax.swing.JButton LokaalSubmit;
     private javax.swing.JButton OpleidingEnSemesterSubmit;
     private javax.swing.JList<String> OpleidingsLijst;
     private javax.swing.JButton OpleidingsOnderdeelSubmit;
-    private javax.swing.JList<String> OpleidingsonderdelenLijst;
     private javax.swing.JButton SlotSubmit;
     private javax.swing.JTextField SoortExamen;
     private javax.swing.JTextField VerantwoordelijkeLesgever;
