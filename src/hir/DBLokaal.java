@@ -57,7 +57,8 @@ public class DBLokaal {
             
             String sql =    "Select * From Lokaal l Where l.LokaalNaam not in " +
                             "(Select lt.LokaalNaam from LokaalToegewezen lt " +
-                            "join ExamenSessie es on es.Esnr = lt.Esnr Where es.SlotNr = ?)";
+                            "join ExamenSessie es on es.Esnr = lt.Esnr Where es.SlotNr = ?)" +
+                            "order by l.straat, l.capaciteit desc";
             
             
             PreparedStatement stmt = con.prepareStatement(sql);

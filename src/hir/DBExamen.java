@@ -119,94 +119,90 @@ public class DBExamen {
     //Leest alle  examens in en maakt er een lijst van Examens van
     public static List<Examen> getExamens(List<Integer> exNrs) throws DBException
     {
-        Connection con = null;
-        try
-        {
-            con = DB.getConnection();
-            
-            String sql = "Select  e.ExNr, " +
-                                "e.ExamenNaam, " +
-                                "e.ExamenKans, " +
-                                "e.Aantal_Studenten, " +
-                                "e.OplOndNaam, " +
-                                "Case WHEN me.ExNr is not null THEN \"Mondeling\" " +
-                                     "WHEN se.ExNr is not null THEN \"Schriftelijk\" " +
-                                "END \"Type Examen\", " +
-                                "me.Max_Aantal_Studenten, " +
-                                "se.Soort " +
-                        "From Examen e " +
-                        "left join MondelingExamen me " +
-                        "on me.ExNr = e.ExNr " +
-                        "left join SchriftelijkExamen se " +
-                        "on se.ExNr = e.ExNr " +
-                        "where e.ExNr in (EXNRARRAY)";
-            
-            //stmt.setArray(1, con.createArrayOf("INT", exNrs.toArray(new Integer[exNrs.size()])));
-            
-            StringBuilder s = new StringBuilder();
-            s.append(exNrs.get(0));
-            for(int i=1;i<exNrs.size();i++){
-                s.append(",");
-                s.append(exNrs.get(i));
-            }
-            
-            sql = sql.replace("EXNRARRAY", s.toString());
-            
-            PreparedStatement stmt = con.prepareStatement(sql);
-            
-            ResultSet srs = stmt.executeQuery();
-                                 
-            int exNr, exKans, aantalStudenten, maxAantalStudenten;
-            String exNaam;
-            SchriftelijkExamen.Soort soort;
-            Opleidingsonderdeel oplOnd;
-            List<Examen> examens = new ArrayList<>();
-            
-            while (srs.next()){
-                exNr = srs.getInt("ExNr");
-                exNaam = srs.getString("ExamenNaam");
-                exKans = srs.getInt("ExamenKans");
-                aantalStudenten = srs.getInt("Aantal_Studenten");
-                oplOnd = DBOpleidingsOnderdeel.getOpleidingsonderdeel(srs.getString("OplOndNaam")) ;
-                if (srs.getString("Type Examen").equalsIgnoreCase("Schriftelijk")){
-                    if (srs.getInt("Soort")==1){
-                        soort = SchriftelijkExamen.Soort.OpenBoek;
-                    }
-                    else{
-                        soort = SchriftelijkExamen.Soort.GeslotenBoek;
-                    }
-                    SchriftelijkExamen se = new SchriftelijkExamen(soort, exNr, exNaam, exKans, aantalStudenten, oplOnd);
-                    examens.add(se);
+        if (exNrs.isEmpty()){
+            return null;
+        } else {
+            Connection con = null;
+            try
+            {
+                con = DB.getConnection();
+
+                String sql = "Select  e.ExNr, " +
+                                    "e.ExamenNaam, " +
+                                    "e.ExamenKans, " +
+                                    "e.Aantal_Studenten, " +
+                                    "e.OplOndNaam, " +
+                                    "Case WHEN me.ExNr is not null THEN \"Mondeling\" " +
+                                         "WHEN se.ExNr is not null THEN \"Schriftelijk\" " +
+                                    "END \"Type Examen\", " +
+                                    "me.Max_Aantal_Studenten, " +
+                                    "se.Soort " +
+                            "From Examen e " +
+                            "left join MondelingExamen me " +
+                            "on me.ExNr = e.ExNr " +
+                            "left join SchriftelijkExamen se " +
+                            "on se.ExNr = e.ExNr " +
+                            "where e.ExNr in (EXNRARRAY)";
+
+                //stmt.setArray(1, con.createArrayOf("INT", exNrs.toArray(new Integer[exNrs.size()])));
+
+                StringBuilder s = new StringBuilder();
+                s.append(exNrs.get(0));
+                for(int i=1;i<exNrs.size();i++){
+                    s.append(",");
+                    s.append(exNrs.get(i));
                 }
-                else {
-                    maxAantalStudenten = srs.getInt("Max_Aantal_Studenten");
-                
-                    MondelingExamen me = new MondelingExamen(maxAantalStudenten, exNr, exNaam, exKans, aantalStudenten, oplOnd);
-                    examens.add(me);
+
+                sql = sql.replace("EXNRARRAY", s.toString());
+
+                PreparedStatement stmt = con.prepareStatement(sql);
+
+                ResultSet srs = stmt.executeQuery();
+
+                int exNr, exKans, aantalStudenten, maxAantalStudenten;
+                String exNaam;
+                SchriftelijkExamen.Soort soort;
+                Opleidingsonderdeel oplOnd;
+                List<Examen> examens = new ArrayList<>();
+
+                while (srs.next()){
+                    exNr = srs.getInt("ExNr");
+                    exNaam = srs.getString("ExamenNaam");
+                    exKans = srs.getInt("ExamenKans");
+                    aantalStudenten = srs.getInt("Aantal_Studenten");
+                    oplOnd = DBOpleidingsOnderdeel.getOpleidingsonderdeel(srs.getString("OplOndNaam")) ;
+                    if (srs.getString("Type Examen").equalsIgnoreCase("Schriftelijk")){
+                        if (srs.getInt("Soort")==1){
+                            soort = SchriftelijkExamen.Soort.OpenBoek;
+                        }
+                        else{
+                            soort = SchriftelijkExamen.Soort.GeslotenBoek;
+                        }
+                        SchriftelijkExamen se = new SchriftelijkExamen(soort, exNr, exNaam, exKans, aantalStudenten, oplOnd);
+                        examens.add(se);
+                    }
+                    else {
+                        maxAantalStudenten = srs.getInt("Max_Aantal_Studenten");
+
+                        MondelingExamen me = new MondelingExamen(maxAantalStudenten, exNr, exNaam, exKans, aantalStudenten, oplOnd);
+                        examens.add(me);
+                    }
                 }
-                
-            }
-               
-            
                 DB.closeConnection(con);
                 return examens;
-            
-            
-                      
-            
+            }catch (DBException dbe)
+            {
+                dbe.printStackTrace();
+                DB.closeConnection(con);
+                throw dbe;
+            }     
+            catch (Exception ex)
+            {
+                ex.printStackTrace();
+                DB.closeConnection(con);
+                throw new DBException(ex);
+            }    
         }
-        catch (DBException dbe)
-        {
-            dbe.printStackTrace();
-            DB.closeConnection(con);
-            throw dbe;
-        }     
-        catch (Exception ex)
-        {
-            ex.printStackTrace();
-            DB.closeConnection(con);
-            throw new DBException(ex);
-        }             
     }
     
     public static String getSoortExamen(String oplOndNaam, int exKans) throws DBException{

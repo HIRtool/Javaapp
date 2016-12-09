@@ -187,7 +187,7 @@ public class ExamenGUI extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGap(50, 50, 50)
                                 .addComponent(OpleidingsOnderdeelSubmit))
                             .addComponent(VerantwoordelijkeLesgever, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(aantalInschrijvingen, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -215,9 +215,9 @@ public class ExamenGUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(10, 10, 10)
                 .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -242,9 +242,9 @@ public class ExamenGUI extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
                             .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(367, 367, 367)
-                        .addComponent(OpleidingsOnderdeelSubmit)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(OpleidingsOnderdeelSubmit)
+                        .addGap(17, 17, 17)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(19, 19, 19)
@@ -412,7 +412,12 @@ public class ExamenGUI extends javax.swing.JFrame {
         for(Examen e: DBExamen.getExamens(DBExamen.getOngeplandeExamenNrs(sem, opleiding, 1))){
             dlm3.addElement(e);
         }
-        ExamenLijst.setModel(dlm3);
+        if (dlm3.isEmpty()){
+            //Waarschuwingsbox als examenlijst leegt is
+            JOptionPane.showMessageDialog(this,"Alle examens zijn al ingepland, kies een andere opleiding of een ander semester","Geen examens gevonden",JOptionPane.WARNING_MESSAGE);
+        } else {
+            ExamenLijst.setModel(dlm3);
+        }
     }
     public void setSlotlijst(String oplNaam, int semester) throws DBException{
         DefaultListModel dlm5 = new DefaultListModel();
