@@ -38,7 +38,7 @@ public class Lokaal {
         this.capaciteit = capaciteit;
     }
     public String toString(){
-    return this.getLokaalNaam() + " (" + this.getCapaciteit() + ")";
+    return this.getAdres().getStraat() + " " + this.getLokaalNaam() + " (" + this.getCapaciteit() + ")";
 }
     public HashSet<Lokaal> LokalenUpdaten() throws DBException{
         HashSet<Lokaal> vrijeLokalen = new HashSet<>();

@@ -497,14 +497,20 @@ public class ExamenGUI extends javax.swing.JFrame {
     public void lokalenBoeken(List<Lokaal> lokalen, int teVerdelenStudenten, int slotNr, int exNr) throws SQLException, DBException{
         int totCapGekozenLokalen = 0;
         boolean overcapaciteit = false;
+        boolean zelfdeAdres = true;
+        Adres eersteAdres = lokalen.get(0).getAdres();
         for (int i = 0 ; i < lokalen.size(); i++){
             Lokaal l = lokalen.get(i);
             totCapGekozenLokalen += l.getCapaciteit();
             if (!overcapaciteit)
                 overcapaciteit = (i<lokalen.size() - 1 && totCapGekozenLokalen >= teVerdelenStudenten);
+            if (!lokalen.get(i).getAdres().equals(eersteAdres)){
+                zelfdeAdres = false;
+            }
         }
-        
-        if (totCapGekozenLokalen < teVerdelenStudenten){
+        if (!zelfdeAdres){
+            JOptionPane.showMessageDialog(this,"Lokalen hebben niet hetzelfde adres","Lokaaltoewijzing error",JOptionPane.ERROR_MESSAGE);
+        } else if(totCapGekozenLokalen < teVerdelenStudenten){
             JOptionPane.showMessageDialog(this,"Te weinig lokalen geselecteerd","Lokaaltoewijzing error",JOptionPane.ERROR_MESSAGE);
         } else if(overcapaciteit){
             JOptionPane.showMessageDialog(this,"Te veel lokalen geselecteerd","Lokaaltoewijzing error",JOptionPane.ERROR_MESSAGE);
