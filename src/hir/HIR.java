@@ -17,6 +17,13 @@ public class HIR {
         ExamenGUI c = new ExamenGUI();
         c.show();
         c.setFaculteitLijst();
+     
+        EXAMENGUISurveillantWisselen2 d = new EXAMENGUISurveillantWisselen2();
+        d.show();
+   
+        EXAMENGUIMENU f = new EXAMENGUIMENU();
+        f.show();
+        
 
         
         

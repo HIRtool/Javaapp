@@ -5,23 +5,28 @@
  */
 package hir;
 
-import java.util.ArrayList;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author Ugent
  */
 public class EXAMENGUISurveillantWisselen2 extends javax.swing.JFrame {
-    private ExamenGUISurveilantWisselen kop;
+    private ExamenGUISurveilantWisselen surveillantWisselen;
+
+    public EXAMENGUISurveillantWisselen2() {
+        initComponents();
+        this.surveillantWisselen = surveillantWisselen;
+    }
 
     /**
      * Creates new form EXAMENGUIWIJZEGEN
      */
-    public EXAMENGUISurveillantWisselen2() {
-        initComponents();
-        
-    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -32,11 +37,19 @@ public class EXAMENGUISurveillantWisselen2 extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        popupMenu1 = new java.awt.PopupMenu();
+        popupMenu2 = new java.awt.PopupMenu();
+        jPopupMenu1 = new javax.swing.JPopupMenu();
+        jOptionPane1 = new javax.swing.JOptionPane();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         beschikbareAssistenten = new javax.swing.JList<>();
         jLabel2 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+
+        popupMenu1.setLabel("popupMenu1");
+
+        popupMenu2.setLabel("popupMenu2");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -61,17 +74,19 @@ public class EXAMENGUISurveillantWisselen2 extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton1))
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel2))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGap(43, 43, 43)
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 74, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(87, Short.MAX_VALUE)
+                        .addComponent(jLabel2)
+                        .addGap(35, 35, 35)))
                 .addGap(38, 38, 38))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(43, 43, 43)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -80,9 +95,9 @@ public class EXAMENGUISurveillantWisselen2 extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 185, Short.MAX_VALUE)
+                    .addComponent(jLabel1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(45, 80, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addGap(33, 33, 33))
         );
@@ -91,23 +106,32 @@ public class EXAMENGUISurveillantWisselen2 extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-      EXAMENGUISurveillantWisselen3 a = new EXAMENGUISurveillantWisselen3();
-      a.show();
+      int a = JOptionPane.showConfirmDialog(this,"Is deze assistent hiermee akkoord?","Belangrijke melding", JOptionPane.YES_NO_OPTION);
+      if(a == JOptionPane.YES_OPTION){
+          try {
+              surveillantiesUitwisselen();
+          } catch (DBException ex) {
+              Logger.getLogger(EXAMENGUISurveillantWisselen2.class.getName()).log(Level.SEVERE, null, ex);
+          }
+      } else {
+          JOptionPane.showMessageDialog(this, "De surveillantiewisseling kan niet uitgevoerd worden!" , "Belangrijke melding", JOptionPane.WARNING_MESSAGE);
+      }
     }//GEN-LAST:event_jButton1ActionPerformed
 
    
     
     //nadat assistent examensessie heeft ingegeven om te wisselen , wordt die in de lijst ingestoken .
-    public void setAssisten() throws DBException{
+   public void setAssisten() throws DBException{
         DefaultListModel dlm = new DefaultListModel();
         for(Assistent a : DBAssistent.getAssistenten()){
-            if(a.isStatusVrij() && a.isSlotnrVrij(kop.getTeWisselenExamenSessie().getSlot().getSlotNr(), a))
+            if(a.isStatusVrij() && a.isSlotnrVrij(surveillantWisselen.getTeWisselenExamenSessie().getSlot().getSlotNr(), a))
                 dlm.addElement(a.toString());
         }
        beschikbareAssistenten.setModel(dlm);
         
     }
-   
+    
+   /*
     
     
     
@@ -119,45 +143,51 @@ public class EXAMENGUISurveillantWisselen2 extends javax.swing.JFrame {
         }
         beschikbareAssistenten.setModel(b);
     }
-    
+    */
     
     public void surveillantiesUitwisselen() throws DBException{
-       Assistent a = DBAssistent.getAssistent(kop.getAssistentNummer());
-       Assistent b = DBAssistent.getAssistent(AssistenNummerNemen(getWisselAssistent()));
+       Assistent a = DBAssistent.getAssistent(surveillantWisselen.getAssistentNummer());
+       Assistent b = DBAssistent.getAssistent(getWisselAssistent().getANr());
         for(ExamenSessie d : a.getToegewezenSessies()){
-            if(kop.getTeWisselenExamenSessie().equals(d.toString())){
+            if(surveillantWisselen.getTeWisselenExamenSessie().equals(d)){
                 a.getToegewezenSessies().remove(d);
                 
             }
         } for(ExamenSessie e : b.getToegewezenSessies()){
-            b.getToegewezenSessies().add(kop.getTeWisselenExamenSessie());
+            b.getToegewezenSessies().add(surveillantWisselen.getTeWisselenExamenSessie());
         }
     }
         
               
-                
+               
         
     
    
-    public String getWisselAssistent(){
+    public Assistent getWisselAssistent(){
         return beschikbareAssistenten.getSelectedValue();
     }
-    public String getExamenSessiesBeschikbaar(){
+    /*public String getExamenSessiesBeschikbaar(){
         return beschikbareAssistenten.getSelectedValue();
     }
-    public int AssistenNummerNemen(String a){
+    */
+   /* public int AssistenNummerNemen(String a){
         String[] b = a.split("-");
         int assNr = Integer.parseInt(b[0]);
         return assNr;
     }
+*/
        
         
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JList<String> beschikbareAssistenten;
+    private javax.swing.JList<Assistent> beschikbareAssistenten;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JOptionPane jOptionPane1;
+    private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JScrollPane jScrollPane1;
+    private java.awt.PopupMenu popupMenu1;
+    private java.awt.PopupMenu popupMenu2;
     // End of variables declaration//GEN-END:variables
 }

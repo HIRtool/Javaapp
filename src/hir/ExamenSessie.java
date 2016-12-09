@@ -65,6 +65,9 @@ public class ExamenSessie {
     public void setSurveillanten(HashSet<Assistent> surveillanten) {
         this.surveillanten = surveillanten;
     }
+    public String toString(){
+        return slot.toString() + " " + getToegewezenLokaal().toString();
+    }
     
     
     

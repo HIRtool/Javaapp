@@ -7,6 +7,8 @@ package hir;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
@@ -41,6 +43,7 @@ public class ExamenGUISurveilantWisselen extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         examenSessies = new javax.swing.JList<>();
+        submit = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -65,6 +68,13 @@ public class ExamenGUISurveilantWisselen extends javax.swing.JFrame {
 
         jScrollPane1.setViewportView(examenSessies);
 
+        submit.setText("submit");
+        submit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                submitActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -78,16 +88,18 @@ public class ExamenGUISurveilantWisselen extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
                     .addComponent(jLabel3))
-                .addGap(41, 41, 41)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton1)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton1))
                         .addGap(37, 37, 37))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(assistenNummer)
-                            .addComponent(jScrollPane1))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(submit)
+                            .addComponent(assistenNummer, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
@@ -98,11 +110,13 @@ public class ExamenGUISurveilantWisselen extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(assistenNummer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
+                .addGap(19, 19, 19)
+                .addComponent(submit)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 123, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addGap(43, 43, 43))
         );
@@ -131,29 +145,45 @@ public class ExamenGUISurveilantWisselen extends javax.swing.JFrame {
        
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void submitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitActionPerformed
+    int AssNr = getAssistentNummer();
+        try {
+            geefExamensessiesWeer(AssNr);
+        } catch (DBException ex) {
+            Logger.getLogger(ExamenGUISurveilantWisselen.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_submitActionPerformed
+
     
     
     public int getAssistentNummer(){
         return Integer.parseInt(assistenNummer.getText());
     }
     
-    public ArrayList<String> geefExamensessiesWeer() throws DBException{
-        ArrayList<String> alleExamenSessies = new ArrayList<>();
-        for (int i = 0; i < DBAssistent.getAssistent(getAssistentNummer()).getToegewezenSessies().size(); i++) {
+    public void geefExamensessiesWeer(int AssNr) throws DBException{
+        ArrayList<ExamenSessie> alleExamenSessies = new ArrayList<>();
+        alleExamenSessies.addAll(DBAssistent.getAssistent(AssNr).getToegewezenSessies());
+        DefaultListModel dlm = new DefaultListModel();
+        for(ExamenSessie a : alleExamenSessies){
+            dlm.addElement(a.toString());
+        }
+        examenSessies.setModel(dlm);
+       /* for (int i = 0; i < DBAssistent.getAssistent(getAssistentNummer()).getToegewezenSessies().size(); i++) {
             
            alleExamenSessies.add(DBAssistent.getAssistent(getAssistentNummer()).getToegewezenSessies().get(i).getSlot().toString());
             
         }
         return alleExamenSessies;
-}
-    public void setExamenSessies() throws DBException{
+}*/
+    }
+    /*public void setExamenSessies() throws DBException{
         DefaultListModel dlm = new DefaultListModel();
-        for(String a : geefExamensessiesWeer()){
+        for(ExamenSessie a : geefExamensessiesWeer()){
             dlm.addElement(a);
         }
         examenSessies.setModel(dlm);
-    }
-    public ExamenSessie getTeWisselenExamenSessie() throws DBException{
+    }*/
+    /*public ExamenSessie getTeWisselenExamenSessie() throws DBException{
         String a= examenSessies.getSelectedValue();
         for(Assistent b: DBAssistent.getAssistenten()){
             for(ExamenSessie c : b.getToegewezenSessies()){
@@ -163,6 +193,10 @@ public class ExamenGUISurveilantWisselen extends javax.swing.JFrame {
             }
         }
         return null;
+    }*/
+    public ExamenSessie getTeWisselenExamenSessie(){
+       return examenSessies.getSelectedValue();
+        
     }
                 
 
@@ -179,12 +213,13 @@ public class ExamenGUISurveilantWisselen extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField assistenNummer;
     private java.awt.Choice choice1;
-    private javax.swing.JList<String> examenSessies;
+    private javax.swing.JList<ExamenSessie> examenSessies;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton submit;
     // End of variables declaration//GEN-END:variables
 
     
