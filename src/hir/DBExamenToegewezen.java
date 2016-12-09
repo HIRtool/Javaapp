@@ -6,8 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 public class DBExamenToegewezen {
     
@@ -87,31 +87,47 @@ public class DBExamenToegewezen {
         }
     }
     
-    public static void SlotToewijzen(int exNr, Slot slot) throws DBException, SQLException
+    public static void SlotToewijzen(int exNr, List<Slot> slots) throws DBException, SQLException
     {
         Connection con = null;
+        
+        PreparedStatement srs = null;
+        
+        String sql = "INSERT INTO BINFG11.ExamenToegewezen(ExNr,SlotNr) VALUES (?,?)";
+            
         try
         {
             con = DB.getConnection();
+            con.setAutoCommit(false);
+            srs = con.prepareStatement(sql);
             
-            int slotNr = slot.getSlotNr();
-            String updateTableSQL = "INSERT INTO BINFG11.ExamenToegewezen(ExNr,SlotNr) VALUES (?,?)";
+            for (Slot a : slots){
+                srs.setInt(1, exNr);
+                srs.setInt(2, a.getSlotNr());
+                srs.executeUpdate();
+            }
             
-            PreparedStatement preparedStatement = con.prepareStatement(updateTableSQL);
-            
-            preparedStatement.setInt(1, exNr);
-            preparedStatement.setInt(2, slotNr);
-            // execute insert SQL statement
-            preparedStatement.executeUpdate();
-            
-            DB.closeConnection(con);
+            con.commit();
         }
-        catch (Exception ex)
+        catch (SQLException ex)
         {
-            ex.printStackTrace();
+            System.out.println(ex.getMessage());
+            if (con != null){
+                try{
+                    System.err.print("Transaction is being rolled back");
+                    con.rollback();
+                } catch(SQLException excep){
+                    System.out.println(ex.getMessage());
+                }
+            }
+        } finally {
+            if (srs != null){
+                srs.close();
+            }
+            con.setAutoCommit(true);
             DB.closeConnection(con);
-            throw new DBException(ex);
-        }  
+        } 
+        
     }
     
     public static void deleteSlotToewijzen(int exNr, Slot slot)throws DBException, SQLException
