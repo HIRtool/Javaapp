@@ -576,7 +576,15 @@ public class ExamenGUI extends javax.swing.JFrame {
     }
     
     private void setAantalTeKiezenSlots() {
-        aantalTeKiezenSlots.setText(Integer.toString(getGeselecteerdExamen().getAantalStudenten()));
+        if (getGeselecteerdExamen() instanceof SchriftelijkExamen){
+            aantalTeKiezenSlots.setText("1");
+        } else {
+            int aantalStudenten = getGeselecteerdExamen().getAantalStudenten();
+            int maxAantalStudenten = ((MondelingExamen)getGeselecteerdExamen()).getMaxAantalStudenten();
+            int aantalSlots = (int)Math.ceil(aantalStudenten/maxAantalStudenten);
+            aantalTeKiezenSlots.setText(Integer.toString(aantalSlots));
+        }
+        
     }
 }
 
