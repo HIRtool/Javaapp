@@ -119,8 +119,9 @@ public class DBExamen {
     //Leest alle  examens in en maakt er een lijst van Examens van
     public static List<Examen> getExamens(List<Integer> exNrs) throws DBException
     {
+        List<Examen> examens = new ArrayList<>();
         if (exNrs.isEmpty()){
-            return null;
+            return examens;
         } else {
             Connection con = null;
             try
@@ -163,7 +164,7 @@ public class DBExamen {
                 String exNaam;
                 SchriftelijkExamen.Soort soort;
                 Opleidingsonderdeel oplOnd;
-                List<Examen> examens = new ArrayList<>();
+                
 
                 while (srs.next()){
                     exNr = srs.getInt("ExNr");
