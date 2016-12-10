@@ -20,19 +20,7 @@ public abstract class Assistent {
         this.isVrij = true;
     }
 
-    //Gaat na of de assistent al genoeg examensessies heeft bijgewoond
-    boolean isStatusVrij(){
-        return isVrij = toegewezenSessies.size() < maxSurveillanties();
-    }
-    boolean isSlotnrVrij( int slotnr, Assistent b){
-        for(ExamenSessie a : b.getToegewezenSessies()){
-            if(a.getSlot().getSlotNr()  == slotnr){
-                return false;
-            }
-                
-        }
-        return true;
-    }
+   
     private void setStatusVrij(){
         isVrij = toegewezenSessies.size() < maxSurveillanties();
     }

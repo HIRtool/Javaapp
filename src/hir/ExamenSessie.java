@@ -6,24 +6,22 @@ public class ExamenSessie {
     
     private int ESnr;
     private int aantalStudenten; //Dit is de som van studenten die van de verschillende examens komen.
-    private HashSet<Examen> Examens = new HashSet<>();
     private Lokaal toegewezenLokaal;
-    private HashSet<Assistent> surveillanten = new HashSet<>();
-    private Slot slot;
+    private int slotNr;
 
-    public ExamenSessie(int ESnr, int aantalStudenten, Lokaal toegewezenLokaal) {
+    public ExamenSessie(int ESnr, int aantalStudenten, Lokaal toegewezenLokaal, int slotNr) {
         this.ESnr = ESnr;
         this.aantalStudenten = aantalStudenten;
         this.toegewezenLokaal = toegewezenLokaal;
-        this.slot = slot;
+        this.slotNr = slotNr;
     }
 
-    public Slot getSlot() {
-        return slot;
+    public int getSlotNr() {
+        return slotNr;
     }
 
-    public void setSlot(Slot slot) {
-        this.slot = slot;
+    public void setSlotNr(int slotNr) {
+        this.slotNr = slotNr;
     }
     
     public int getESnr() {
@@ -42,34 +40,8 @@ public class ExamenSessie {
         this.aantalStudenten = aantalStudenten;
     }
 
-    public HashSet<Examen> getExamens() {
-        return Examens;
-    }
-
-    public void setExamens(HashSet<Examen> Examens) {
-        this.Examens = Examens;
-    }
-
-    public Lokaal getToegewezenLokaal() {
-        return toegewezenLokaal;
-    }
-
-    public void setToegewezenLokaal(Lokaal toegewezenLokaal) {
-        this.toegewezenLokaal = toegewezenLokaal;
-    }
-
-    public HashSet<Assistent> getSurveillanten() {
-        return surveillanten;
-    }
-
-    public void setSurveillanten(HashSet<Assistent> surveillanten) {
-        this.surveillanten = surveillanten;
-    }
-    public String toString(){
-        return slot.toString() + " " + getToegewezenLokaal().toString();
-    }
     
-    
+   
     
     
 }
