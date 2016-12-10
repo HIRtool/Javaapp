@@ -78,6 +78,11 @@ public abstract class Assistent {
     public void setToegewezenSessies(ArrayList<ExamenSessie> toegewezenSessies) {
         this.toegewezenSessies = toegewezenSessies;
     }
+
+    @Override
+    public String toString() {
+        return assVoornaam + " " + assAchternaam;
+    }
     
     
     

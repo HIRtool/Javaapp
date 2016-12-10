@@ -4,6 +4,7 @@ package hir;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
@@ -338,7 +339,9 @@ public class ExamenGUI extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Nog geen slots gekozen" , "Foute Slotkeuze", JOptionPane.WARNING_MESSAGE);
             } else if(slots.size()!=calculateAantalTeKiezenSlots()){
                 JOptionPane.showMessageDialog(this, "Verkeerd aantal slots gekozen" , "Foute Slotkeuze", JOptionPane.WARNING_MESSAGE);
-            } else{
+            } else if(!zijnSlotsAaneensluitend(slots)){
+                JOptionPane.showMessageDialog(this, "Slots zijn niet aaneensluitend" , "Foute Slotkeuze", JOptionPane.WARNING_MESSAGE);
+            } else {
                 DBExamenToegewezen.SlotToewijzen(exNr, slots);
                 setLokaalLijst(slots.get(slotInBehandeling).getSlotNr());
             }
@@ -347,6 +350,9 @@ public class ExamenGUI extends javax.swing.JFrame {
         } catch (SQLException ex) {
             System.out.println("ERROR while writing to DB");
         }
+    
+
+    
         
     }//GEN-LAST:event_SlotSubmitActionPerformed
 
@@ -424,8 +430,8 @@ public class ExamenGUI extends javax.swing.JFrame {
                         setLokaalLijst(slots.get(slotInBehandeling).getSlotNr());
                         JOptionPane.showMessageDialog(this, "Kies het lokaal voor het " + (slotInBehandeling+1) + "e slot" , "Lokaal toewijzen", JOptionPane.PLAIN_MESSAGE);
                 } else {
-                     JOptionPane.showMessageDialog(this, "Toewijzing van lokalen succesvol afgerond");
                      examenSessiesInBehandeling = 0;
+                     JOptionPane.showMessageDialog(this, "Kies " + calculateAantalNodigeSurveillanten(examenSessiesTePlannen.get(examenSessiesInBehandeling)) + " surveillanten voor examensessie " + (examenSessiesInBehandeling+1) + ".", "surveillanten toewijzen", JOptionPane.PLAIN_MESSAGE);
                      setAssistentenLijst(examenSessiesTePlannen.get(examenSessiesInBehandeling).getSlotNr());
                 }
             }
@@ -440,22 +446,24 @@ public class ExamenGUI extends javax.swing.JFrame {
 
     private void SurveillantenSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SurveillantenSubmitActionPerformed
         try {
-            int esNr = examenSessiesTePlannen.get(examenSessiesInBehandeling).getESnr();
+            ExamenSessie es = examenSessiesTePlannen.get(examenSessiesInBehandeling);
             List<Assistent> geselecteerdeAssistenten = SurveillantenList.getSelectedValuesList();
-            if (examenSessieBoeken(esNr, geselecteerdeAssistenten)){
+            if (surveillantieToewijzen(es, geselecteerdeAssistenten)){
                 examenSessiesInBehandeling++;
                 if(examenSessiesInBehandeling < examenSessiesTePlannen.size()){
                     setAssistentenLijst(examenSessiesTePlannen.get(examenSessiesInBehandeling).getSlotNr());
-                    JOptionPane.showMessageDialog(this, "Kies surveillanten voor de " + (examenSessiesInBehandeling+1) + "e examensessie" , "surveillanten toewijzen", JOptionPane.PLAIN_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Kies " + calculateAantalNodigeSurveillanten(examenSessiesTePlannen.get(examenSessiesInBehandeling)) + " surveillanten voor examensessie " + (examenSessiesInBehandeling+1) + ".", "surveillanten toewijzen", JOptionPane.PLAIN_MESSAGE);
                 }
                 else {
                     examenSessiesInBehandeling = 0;
                     examenSessiesTePlannen.clear();
-                    JOptionPane.showMessageDialog(this, "Toewijzing van surveillanten succesvol afgerond");
+                    JOptionPane.showMessageDialog(this, "Examen is succesvol ingepland.");
                 }
             }
             
         } catch (DBException ex) {
+            Logger.getLogger(ExamenGUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
             Logger.getLogger(ExamenGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_SurveillantenSubmitActionPerformed
@@ -695,8 +703,44 @@ public class ExamenGUI extends javax.swing.JFrame {
         SurveillantenList.setModel(listSurveillanten);
     }
 
-    private boolean examenSessieBoeken(int esNr, List<Assistent> geselecteerdeAssistenten) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private boolean surveillantieToewijzen(ExamenSessie es, List<Assistent> geselecteerdeAssistenten) throws DBException, SQLException {
+        if (geselecteerdeAssistenten.size() == calculateAantalNodigeSurveillanten(es)){
+            DBAssistent.surveillantieToewijzen(es, geselecteerdeAssistenten);
+            return true;
+        } else {
+            JOptionPane.showMessageDialog(this,"Selecteer " + calculateAantalNodigeSurveillanten(es) + " surveillanten","Aantal surveillanten error",JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+    }
+    
+    private int calculateAantalNodigeSurveillanten(ExamenSessie es){
+        return (int)Math.ceil(es.getAantalStudenten()/40);
+    }
+    
+    private boolean zijnSlotsAaneensluitend(List<Slot> slots) {
+        if (slots != null && slots.size() > 1){
+            Slot previousSlot = slots.get(0);
+            
+            for( int i = 1; i < slots.size(); i++){
+                Slot currentSlot = slots.get(i);
+                
+                if(previousSlot.getMoment() == Slot.Moment.VoorMiddag){
+                    if(!(currentSlot.getMoment() == Slot.Moment.NaMiddag && previousSlot.getDatum().equals(currentSlot.getDatum()))){
+                        return false;
+                    } 
+                } else {
+                    long verschil = currentSlot.getDatum().getTime() - previousSlot.getDatum().getTime();
+                    long dagenVerschil = TimeUnit.DAYS.convert(verschil, TimeUnit.MILLISECONDS);
+                    if(!(currentSlot.getMoment() == Slot.Moment.VoorMiddag && dagenVerschil == 1)){
+                        return false;
+                    }
+                }
+                previousSlot = currentSlot;
+            }
+            return true;
+        } else
+            return true;
+        
     }
 }
 

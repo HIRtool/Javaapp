@@ -3,6 +3,7 @@ package hir;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -107,33 +108,16 @@ public class DBAssistent {
         {
             con = DB.getConnection();
             
-            String sql =    "Select a.*, p.* From Assistent a " +
-                            "join Prof p on a.Pnr = p.Pnr " +
-                            "join Opleidingsonderdeel oo on a.Pnr = oo.Pnr " +
-                            "where oo.OplOndNaam = ? and a.Anr not in (select ss.Anr from ( " +
-                                "Select  a.Anr, a.Soort, es.SlotNr from Assistent a " +
-                                "join Surveillantvan sv on a.Anr = sv.Anr " +
-                                "join ExamenSessie es on es.Esnr = sv.Esnr " +
-                                "group by a.Anr " +
-                                "having CASE a.Soort WHEN 1 THEN 3 WHEN 2 THEN 6  END <= count(1) " +
-                                "or es.SlotNr = ?) ss) " +
-                            "union all " +
-                            "Select a.*, p.* From Assistent a " +
-                            "join Prof p on a.Pnr = p.Pnr " +
-                            "join Opleidingsonderdeel oo on a.Pnr = oo.Pnr " +
-                            "where oo.OplOndNaam <> ? and a.Anr not in (select ss.Anr from ( " +
-                                "Select  a.Anr, a.Soort, es.SlotNr from Assistent a " +
-                                "join Surveillantvan sv on a.Anr = sv.Anr " +
-                                "join ExamenSessie es on es.Esnr = sv.Esnr " +
-                                "group by a.Anr " +
-                                "having CASE a.Soort WHEN 1 THEN 3 WHEN 2 THEN 6 END <= count(1) " +
-                                "or es.SlotNr = ?) ss)";
+            String sql =    "select a.Anr, a.AssVoornaam, a.AssAchternaam, a.Soort, p.Pnr, p.ProfVoornaam, p.ProfAchternaam, sv.Esnr, es.slotNr from Assistent a " +
+                            "join Prof p on p.Pnr = a.Pnr " +
+                            "left join Surveillantvan sv on sv.Anr = a.Anr " +
+                            "left join ExamenSessie es on es.Esnr = sv.Esnr " +
+                            "group by a.Anr " +
+                            "having sum(CASE WHEN sv.Esnr is null THEN 0 ELSE 1 END) < CASE a.Soort WHEN 1 THEN 3 WHEN 2 THEN 6  END and (es.SlotNr <> ? or es.SlotNr is null) " +
+                            "order by sum(CASE WHEN sv.Esnr is null THEN 0 ELSE 1 END) asc ";
             PreparedStatement stmt = con.prepareStatement(sql);
 
             stmt.setInt(1, slotNr);
-            stmt.setString(2, oplOndNaam);
-            stmt.setInt(1, slotNr);
-            stmt.setString(4, oplOndNaam);
             
             
             ResultSet srs = stmt.executeQuery();
@@ -141,7 +125,7 @@ public class DBAssistent {
             int soort, pnr, aNr;
             
             
-            if (srs.next())
+            while (srs.next())
             {
                 aNr = srs.getInt("Anr");
                 assVoornaam = srs.getString("AssVoornaam");
@@ -151,23 +135,18 @@ public class DBAssistent {
                 profVoornaam = srs.getString("ProfVoornaam");
                 profAchternaam = srs.getString("ProfAchternaam");
                 
-            }
-            else {
-                DB.closeConnection(con);
-                return null;
+                Prof p = new Prof(pnr, profVoornaam, profAchternaam);
+                if(soort==1)
+                {
+                    OnderzoeksAssistent assistent = new OnderzoeksAssistent(aNr, assVoornaam, assAchternaam, p);
+                    vrijeAssistenten.add(assistent);
+
+                } else {
+                    OnderwijsAssistent assistent = new OnderwijsAssistent(aNr, assVoornaam, assAchternaam, p);
+                    vrijeAssistenten.add(assistent);
+                }
             }
             
-            Prof p = new Prof(pnr, assVoornaam, assAchternaam);
-            if(soort==1)
-            {
-                OnderzoeksAssistent assistent = new OnderzoeksAssistent(aNr, assVoornaam, assAchternaam, p);
-                vrijeAssistenten.add(assistent);
-                
-            }
-            else {
-                OnderwijsAssistent assistent = new OnderwijsAssistent(aNr, assVoornaam, assAchternaam, p);
-                vrijeAssistenten.add(assistent);
-                }
             DB.closeConnection(con);
             return vrijeAssistenten;
             
@@ -178,6 +157,48 @@ public class DBAssistent {
             DB.closeConnection(con);
             throw new DBException(ex);
         }        
+    }
+
+    public static void surveillantieToewijzen(ExamenSessie es, List<Assistent> geselecteerdeAssistenten) throws DBException, SQLException {
+        Connection con = null;
+        
+        PreparedStatement srs = null;
+        
+        String sql = "INSERT INTO BINFG11.Surveillantvan(Esnr,Anr) VALUES (?,?)";
+        
+            
+        try
+        {
+            con = DB.getConnection();
+            con.setAutoCommit(false);
+            srs = con.prepareStatement(sql);
+            
+            for(Assistent a : geselecteerdeAssistenten){
+                srs.setInt(1, es.getESnr());
+                srs.setInt(2, a.getANr());
+                srs.executeUpdate();
+            }
+            
+            con.commit();
+        }
+        catch (SQLException ex)
+        {
+            System.out.println(ex.getMessage());
+            if (con != null){
+                try{
+                    System.err.print("Transaction is being rolled back");
+                    con.rollback();
+                } catch(SQLException excep){
+                    System.out.println(ex.getMessage());
+                }
+            }
+        } finally {
+            if (srs != null){
+                srs.close();
+            }
+            con.setAutoCommit(true);
+            DB.closeConnection(con);
+        } 
     }
     
 }
