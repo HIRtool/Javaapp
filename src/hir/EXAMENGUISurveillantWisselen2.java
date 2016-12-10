@@ -115,6 +115,8 @@ public class EXAMENGUISurveillantWisselen2 extends javax.swing.JFrame {
           }
       } else {
           JOptionPane.showMessageDialog(this, "De surveillantiewisseling kan niet uitgevoerd worden!" , "Belangrijke melding", JOptionPane.WARNING_MESSAGE);
+          EXAMENGUIMENU b = new EXAMENGUIMENU();
+          b.show();
       }
     }//GEN-LAST:event_jButton1ActionPerformed
 

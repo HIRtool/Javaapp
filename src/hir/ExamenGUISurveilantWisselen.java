@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 /**
@@ -150,7 +151,7 @@ public class ExamenGUISurveilantWisselen extends javax.swing.JFrame {
         try {
             geefExamensessiesWeer(AssNr);
         } catch (DBException ex) {
-            Logger.getLogger(ExamenGUISurveilantWisselen.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "Dit assistentennummer bestaat niet!", "Belangrijke melding", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_submitActionPerformed
 
