@@ -91,7 +91,7 @@ public class DBOpleiding {
             throw new DBException(ex);
         }
     }
-    public static HashSet<String> getOpleidingen(String faculteit) throws DBException{
+    public static HashSet<Opleiding> getOpleidingen(Faculteit faculteit) throws DBException{
         Connection con = null;
         try
         {
@@ -100,13 +100,14 @@ public class DBOpleiding {
             String sql = "SELECT OplNaam FROM Opleiding WHERE FacNaam = ?";
             PreparedStatement stmt = con.prepareStatement(sql);
 
-            stmt.setString(1, faculteit);
+            stmt.setString(1, faculteit.getFacNaam());
             
             ResultSet srs = stmt.executeQuery();
-            HashSet<String> opleidingen = new HashSet<>();
+            HashSet<Opleiding> opleidingen = new HashSet<>();
             
             while(srs.next()){
-                opleidingen.add(srs.getString("OplNaam"));
+                Opleiding a = getOpleiding(srs.getString("OplNaam"));
+                opleidingen.add(a);
                 
             }
             DB.closeConnection(con);

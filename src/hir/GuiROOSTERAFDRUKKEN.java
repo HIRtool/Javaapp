@@ -132,8 +132,8 @@ public class GuiROOSTERAFDRUKKEN extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void FaculteitSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FaculteitSubmitActionPerformed
-       try{  String faculteit = getFaculteit();
-        setOpleidingenLijst(faculteit);
+       try{  
+        setOpleidingenLijst();
      } catch(DBException e){
          System.out.println("ERROR");
      }
@@ -148,22 +148,23 @@ public class GuiROOSTERAFDRUKKEN extends javax.swing.JFrame {
    
     public void setFaculteitLijst() throws DBException{
         DefaultListModel dlm = new DefaultListModel();
-        for(String a: DBFaculteit.getFaculteiten()){
-            dlm.addElement(a);
+        for(Faculteit f: DBFaculteit.getFaculteiten()){
+            dlm.addElement(f);
         }
         faculteitLijst.setModel(dlm);
     }
-    public void setOpleidingenLijst(String faculteit) throws DBException{
+    public void setOpleidingenLijst() throws DBException{
+        Faculteit f = faculteitLijst.getSelectedValue();
         DefaultListModel dlm2 = new DefaultListModel();
-        for(String a: DBOpleiding.getOpleidingen(faculteit)){
-            dlm2.addElement(a);
+        for(Opleiding opl: DBOpleiding.getOpleidingen(f)){
+            dlm2.addElement(opl);
             
         }
         OpleidingenLijst.setModel(dlm2);
     }
-    public String getFaculteit(){
+    /*public String getFaculteit(){
       return faculteitLijst.getSelectedValue();
-    }
+    }*/
     public int getSemester(){
         return Integer.parseInt(semester.getText());
     }
@@ -175,7 +176,7 @@ public class GuiROOSTERAFDRUKKEN extends javax.swing.JFrame {
     private javax.swing.JButton FaculteitSubmit;
     private javax.swing.JList<String> OpleidingenLijst;
     private javax.swing.JButton RoosterAfdruk;
-    private javax.swing.JList<String> faculteitLijst;
+    private javax.swing.JList<Faculteit> faculteitLijst;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

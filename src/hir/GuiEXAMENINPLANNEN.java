@@ -366,8 +366,8 @@ public class GuiEXAMENINPLANNEN extends javax.swing.JFrame {
     }//GEN-LAST:event_VerantwoordelijkeLesgeverActionPerformed
 
     private void FaculteitSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FaculteitSubmitActionPerformed
-     try{  String faculteit = getFaculteit();
-        setOpleidingenLijst(faculteit);
+     try{  
+        setOpleidingenLijst(FaculteitLijst.getSelectedValue());
      } catch(DBException e){
          System.out.println("ERROR");
      }
@@ -384,7 +384,7 @@ public class GuiEXAMENINPLANNEN extends javax.swing.JFrame {
             System.out.println("ERROR");
         }*/
            int sem = getSemester(); 
-           String opleiding = getOpleiding();
+           Opleiding opleiding = getOpleiding();
         try {
             setExamenLijst(sem, opleiding);
         } catch(DBException e){
@@ -399,7 +399,7 @@ public class GuiEXAMENINPLANNEN extends javax.swing.JFrame {
     private void OpleidingsOnderdeelSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OpleidingsOnderdeelSubmitActionPerformed
        String opleidingsOnderdeel = getOpleidingsOnderdeel();
        Examen ex = getGeselecteerdExamen();
-       String opleiding = getOpleiding();
+       String opleiding = getOpleiding().getOplNaam();
        int sem = getSemester();
         try{ 
         setAantalStudenten();
@@ -471,12 +471,12 @@ public class GuiEXAMENINPLANNEN extends javax.swing.JFrame {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JList<Examen> ExamenLijst;
-    private javax.swing.JList<String> FaculteitLijst;
+    private javax.swing.JList<Faculteit> FaculteitLijst;
     private javax.swing.JButton FaculteitSubmit;
     private javax.swing.JButton LokaalSubmit;
     private javax.swing.JTextField MaxStudentenPerSlot;
     private javax.swing.JButton OpleidingEnSemesterSubmit;
-    private javax.swing.JList<String> OpleidingsLijst;
+    private javax.swing.JList<Opleiding> OpleidingsLijst;
     private javax.swing.JButton OpleidingsOnderdeelSubmit;
     private javax.swing.JButton SlotSubmit;
     private javax.swing.JTextField SoortExamen;
@@ -514,8 +514,8 @@ public class GuiEXAMENINPLANNEN extends javax.swing.JFrame {
 
     public void setFaculteitLijst() throws DBException{
         DefaultListModel dlm = new DefaultListModel();
-        for(String a: DBFaculteit.getFaculteiten()){
-            dlm.addElement(a);
+        for(Faculteit f: DBFaculteit.getFaculteiten()){
+            dlm.addElement(f);
         }
         FaculteitLijst.setModel(dlm);
     }
@@ -533,20 +533,22 @@ public class GuiEXAMENINPLANNEN extends javax.swing.JFrame {
     public int getSemester(){
         return Integer.parseInt(semester.getText());
     }
-    public void setOpleidingenLijst(String faculteit) throws DBException{
+    public void setOpleidingenLijst(Faculteit faculteit) throws DBException{
         DefaultListModel dlm2 = new DefaultListModel();
-        for(String a: DBOpleiding.getOpleidingen(faculteit)){
-            dlm2.addElement(a);
+        for(Opleiding opl: DBOpleiding.getOpleidingen(faculteit)){
+            dlm2.addElement(opl);
             
         }
         OpleidingsLijst.setModel(dlm2);
     }
-    public String getOpleiding(){
+    
+    public Opleiding getOpleiding(){
         return OpleidingsLijst.getSelectedValue();
     }
-    public void setExamenLijst(int sem, String opleiding) throws DBException{
+    public void setExamenLijst(int sem, Opleiding opleiding) throws DBException{
+        String opl = opleiding.getOplNaam();
         DefaultListModel dlm3 = new DefaultListModel();
-        for(Examen e: DBExamen.getExamens(DBExamen.getOngeplandeExamenNrs(sem, opleiding, 1))){
+        for(Examen e: DBExamen.getExamens(DBExamen.getOngeplandeExamenNrs(sem, opl, 1))){
             dlm3.addElement(e);
         }
         if (dlm3.isEmpty()){
@@ -575,9 +577,9 @@ public class GuiEXAMENINPLANNEN extends javax.swing.JFrame {
         }
         return null;
     }
-    public String getFaculteit(){
+    /*public String getFaculteit(){
       return FaculteitLijst.getSelectedValue();
-    }
+    }*/
     
     public List<Slot> getSlots() throws DBException{
         return slotLijst.getSelectedValuesList();

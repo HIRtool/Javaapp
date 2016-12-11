@@ -96,7 +96,12 @@ public class GuiMENU extends javax.swing.JFrame {
             }
         });
 
-        ButtonExamenUitplannen.setText("Examen uitlplannen");
+        ButtonExamenUitplannen.setText("Examen uitplannen");
+        ButtonExamenUitplannen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ButtonExamenUitplannenActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -159,6 +164,16 @@ public class GuiMENU extends javax.swing.JFrame {
         GuiROOSTERAFDRUKKEN  roosterAfdrukken = new GuiROOSTERAFDRUKKEN();
         roosterAfdrukken.show();
     }//GEN-LAST:event_ButtonExamenRoosterAfdrukkenActionPerformed
+
+    private void ButtonExamenUitplannenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonExamenUitplannenActionPerformed
+        GuiEXAMENUITPLANNEN examenUitplannen = new GuiEXAMENUITPLANNEN();
+        examenUitplannen.show();
+        try {
+            examenUitplannen.setFaculteitLijst();
+        } catch (DBException ex) {
+            Logger.getLogger(GuiMENU.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_ButtonExamenUitplannenActionPerformed
 
     /**
      * @param args the command line arguments

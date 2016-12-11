@@ -172,8 +172,11 @@
     </Component>
     <Component class="javax.swing.JButton" name="ButtonExamenUitplannen">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Examen uitlplannen"/>
+        <Property name="text" type="java.lang.String" value="Examen uitplannen"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ButtonExamenUitplannenActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

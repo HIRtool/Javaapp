@@ -56,7 +56,7 @@ public class DBFaculteit {
     }
     
     //Leest alle faculteiten in
-    public static HashSet<String> getFaculteiten() throws DBException
+    public static HashSet<Faculteit> getFaculteiten() throws DBException
     {
         Connection con = null;
         try
@@ -68,9 +68,12 @@ public class DBFaculteit {
             String sql = "SELECT FacNaam FROM Faculteit";
             ResultSet srs = stmt.executeQuery(sql);
 
-            HashSet<String> faculteiten = new HashSet<String>();
-            while (srs.next())
-                faculteiten.add(srs.getString("FacNaam"));
+            HashSet<Faculteit> faculteiten = new HashSet<>();
+            while (srs.next()){
+                Faculteit f = getFaculteit(srs.getString("FacNaam"));
+                faculteiten.add(f);
+            }
+                
             
             DB.closeConnection(con);
             return faculteiten;
