@@ -430,9 +430,14 @@ public class GuiEXAMENINPLANNEN extends javax.swing.JFrame {
                         setLokaalLijst(slots.get(slotInBehandeling).getSlotNr());
                         JOptionPane.showMessageDialog(this, "Kies het lokaal voor het " + (slotInBehandeling+1) + "e slot" , "Lokaal toewijzen", JOptionPane.PLAIN_MESSAGE);
                 } else {
-                     examenSessiesInBehandeling = 0;
+                    if (ExamenLijst.getSelectedValue() instanceof SchriftelijkExamen){
+                        examenSessiesInBehandeling = 0;
                      JOptionPane.showMessageDialog(this, "Kies " + calculateAantalNodigeSurveillanten(examenSessiesTePlannen.get(examenSessiesInBehandeling)) + " surveillanten voor examensessie " + (examenSessiesInBehandeling+1) + ".", "surveillanten toewijzen", JOptionPane.PLAIN_MESSAGE);
                      setAssistentenLijst(examenSessiesTePlannen.get(examenSessiesInBehandeling).getSlotNr());
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Geen Surveillanten nodig. Examen is succesvol ingepland.");
+                    }
+                     
                 }
             }
            
@@ -715,7 +720,8 @@ public class GuiEXAMENINPLANNEN extends javax.swing.JFrame {
     }
     
     private int calculateAantalNodigeSurveillanten(ExamenSessie es){
-        return (int)Math.ceil(es.getAantalStudenten()/40);
+        double d = es.getAantalStudenten()/40.0;
+        return (int)Math.ceil(d);
     }
     
     private boolean zijnSlotsAaneensluitend(List<Slot> slots) {

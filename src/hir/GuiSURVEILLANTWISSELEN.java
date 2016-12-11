@@ -265,7 +265,7 @@ public class GuiSURVEILLANTWISSELEN extends javax.swing.JFrame {
         for(Assistent assistent : DBAssistent.getVrijeAssistenten(slotNr)){
            listSurveillanten.addElement(assistent);
         }
-        SurveillantenLijst.setModel(listSurveillanten);
+        VrijeSurveillantenLijst.setModel(listSurveillanten);
     }
 
     private void removeEersteSurveillantie() throws DBException, SQLException {
