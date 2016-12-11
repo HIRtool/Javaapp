@@ -310,13 +310,12 @@ public class DBAssistent {
         }
     }
     
-    public static void surveillantieVerwijderen(ExamenSessie es, Assistent a) throws DBException, SQLException{
+    public static void surveillantieWisselen(ExamenSessie es, Assistent aWeg, Assistent aNieuw) throws DBException, SQLException{
         Connection con = null;
         
         PreparedStatement srs = null;
         
-        String sql =    "DELETE FROM BINFG11.Surveillantvan " +
-                        "WHERE Esnr = ? AND Anr = ?";
+        String sql =    "UPDATE BINFG11.Surveillantvan SET Esnr = ? ,Anr = ? WHERE Esnr = ? AND Anr = ?";
         
             
         try
@@ -326,7 +325,10 @@ public class DBAssistent {
             srs = con.prepareStatement(sql);
             
             srs.setInt(1, es.getESnr());
-            srs.setInt(2, a.getANr());
+            srs.setInt(2, aNieuw.getANr());
+            srs.setInt(3, es.getESnr());
+            srs.setInt(4, aWeg.getANr());
+            srs.executeUpdate();
                         
             con.commit();
         }

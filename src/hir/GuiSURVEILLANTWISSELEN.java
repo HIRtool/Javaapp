@@ -175,11 +175,12 @@ public class GuiSURVEILLANTWISSELEN extends javax.swing.JFrame {
     }//GEN-LAST:event_submitGekozenSurveillantActionPerformed
 
     private void ButtonWisselActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonWisselActionPerformed
-        int a = JOptionPane.showConfirmDialog(this,"Is deze assistent hiermee akkoord?","Belangrijke melding", JOptionPane.YES_NO_OPTION);
+        int a = JOptionPane.showConfirmDialog(this,"Is deze assistent hiermee akkoord?","Surveillantie wisselen", JOptionPane.YES_NO_OPTION);
             if(a == JOptionPane.YES_OPTION){
                 try {
-                    removeEersteSurveillantie();
-                    addTweedeSurveillantie();
+                    surveillantiesWisselen();
+                    JOptionPane.showMessageDialog(this, "Surveillanten succesvol gewisseld" , "Surveillantie wisselen", JOptionPane.PLAIN_MESSAGE);
+                    this.dispose();
                 } catch (DBException ex) {
                     Logger.getLogger(GuiSURVEILLANTWISSELEN.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (SQLException ex) {
@@ -268,18 +269,12 @@ public class GuiSURVEILLANTWISSELEN extends javax.swing.JFrame {
         VrijeSurveillantenLijst.setModel(listSurveillanten);
     }
 
-    private void removeEersteSurveillantie() throws DBException, SQLException {
+    private void surveillantiesWisselen() throws DBException, SQLException {
         ExamenSessie es = examenSessies.getSelectedValue();
-        Assistent a = SurveillantenLijst.getSelectedValue();
-        DBAssistent.surveillantieVerwijderen(es, a);
+        Assistent aWeg = SurveillantenLijst.getSelectedValue();
+        Assistent aNieuw = VrijeSurveillantenLijst.getSelectedValue();
+        DBAssistent.surveillantieWisselen(es, aWeg, aNieuw);
     }
 
-    private void addTweedeSurveillantie() throws DBException, SQLException {
-        ExamenSessie es = examenSessies.getSelectedValue();
-        Assistent a = SurveillantenLijst.getSelectedValue();
-        List<Assistent> geselecteerdeAssistent = new ArrayList<>();
-        geselecteerdeAssistent.add(a);
-        DBAssistent.surveillantieToewijzen(es, geselecteerdeAssistent);
-    }
-
+    
 }
