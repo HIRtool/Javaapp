@@ -22,7 +22,11 @@ public class GuiEXAMENINPLANNEN extends javax.swing.JFrame {
     
     public GuiEXAMENINPLANNEN() {
         initComponents();
-        
+        OpleidingEnSemesterSubmit.setEnabled(false);
+        ExamenSubmit.setEnabled(false);
+        SlotSubmit.setEnabled(false);
+        LokaalSubmit.setEnabled(false);
+        SurveillantenSubmit.setEnabled(false);
     }
     
     
@@ -56,7 +60,7 @@ public class GuiEXAMENINPLANNEN extends javax.swing.JFrame {
         VerantwoordelijkeLesgever = new javax.swing.JTextField();
         FaculteitSubmit = new javax.swing.JButton();
         OpleidingEnSemesterSubmit = new javax.swing.JButton();
-        OpleidingsOnderdeelSubmit = new javax.swing.JButton();
+        ExamenSubmit = new javax.swing.JButton();
         semester = new javax.swing.JTextField();
         SoortExamen = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
@@ -74,6 +78,7 @@ public class GuiEXAMENINPLANNEN extends javax.swing.JFrame {
         jScrollPane6 = new javax.swing.JScrollPane();
         SurveillantenList = new javax.swing.JList<>();
         SurveillantenSubmit = new javax.swing.JButton();
+        ButtonKeerTerugNaarMenu = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -135,10 +140,10 @@ public class GuiEXAMENINPLANNEN extends javax.swing.JFrame {
             }
         });
 
-        OpleidingsOnderdeelSubmit.setText("submit");
-        OpleidingsOnderdeelSubmit.addActionListener(new java.awt.event.ActionListener() {
+        ExamenSubmit.setText("submit");
+        ExamenSubmit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                OpleidingsOnderdeelSubmitActionPerformed(evt);
+                ExamenSubmitActionPerformed(evt);
             }
         });
 
@@ -180,17 +185,17 @@ public class GuiEXAMENINPLANNEN extends javax.swing.JFrame {
             }
         });
 
+        ButtonKeerTerugNaarMenu.setText("Keer terug naar Menu");
+        ButtonKeerTerugNaarMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ButtonKeerTerugNaarMenuActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jLabel13)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 466, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(SurveillantenSubmit)
-                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -235,7 +240,7 @@ public class GuiEXAMENINPLANNEN extends javax.swing.JFrame {
                                         .addComponent(LokaalSubmit))
                                     .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(OpleidingsOnderdeelSubmit)
+                                            .addComponent(ExamenSubmit)
                                             .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGap(18, 18, 18)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -255,6 +260,15 @@ public class GuiEXAMENINPLANNEN extends javax.swing.JFrame {
                                                     .addComponent(VerantwoordelijkeLesgever)
                                                     .addComponent(aantalTeKiezenSlots, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))))))))))
                 .addContainerGap(24, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jLabel13)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 466, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ButtonKeerTerugNaarMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(SurveillantenSubmit))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -304,7 +318,7 @@ public class GuiEXAMENINPLANNEN extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jLabel12)
-                                        .addComponent(OpleidingsOnderdeelSubmit))
+                                        .addComponent(ExamenSubmit))
                                     .addComponent(MaxStudentenPerSlot, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(41, 41, 41)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -323,7 +337,9 @@ public class GuiEXAMENINPLANNEN extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel13)
                             .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(48, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                .addComponent(ButtonKeerTerugNaarMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(24, 24, 24))
         );
 
         pack();
@@ -344,6 +360,12 @@ public class GuiEXAMENINPLANNEN extends javax.swing.JFrame {
             } else {
                 DBExamenToegewezen.SlotToewijzen(exNr, slots);
                 setLokaalLijst(slots.get(slotInBehandeling).getSlotNr());
+                LokaalSubmit.setEnabled(true);
+                FaculteitSubmit.setEnabled(false);
+                OpleidingEnSemesterSubmit.setEnabled(false);
+                ExamenSubmit.setEnabled(false);
+                SlotSubmit.setEnabled(false);
+                ButtonKeerTerugNaarMenu.setEnabled(false);
             }
         } catch (DBException ex) {
             System.out.println("ERROR");
@@ -368,6 +390,7 @@ public class GuiEXAMENINPLANNEN extends javax.swing.JFrame {
     private void FaculteitSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FaculteitSubmitActionPerformed
      try{  
         setOpleidingenLijst(FaculteitLijst.getSelectedValue());
+        OpleidingEnSemesterSubmit.setEnabled(true);
      } catch(DBException e){
          System.out.println("ERROR");
      }
@@ -387,6 +410,7 @@ public class GuiEXAMENINPLANNEN extends javax.swing.JFrame {
            Opleiding opleiding = getOpleiding();
         try {
             setExamenLijst(sem, opleiding);
+            ExamenSubmit.setEnabled(true);
         } catch(DBException e){
             System.out.println("ERROR");
         }
@@ -396,7 +420,7 @@ public class GuiEXAMENINPLANNEN extends javax.swing.JFrame {
         
     }//GEN-LAST:event_OpleidingEnSemesterSubmitActionPerformed
 
-    private void OpleidingsOnderdeelSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OpleidingsOnderdeelSubmitActionPerformed
+    private void ExamenSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExamenSubmitActionPerformed
        String opleidingsOnderdeel = getOpleidingsOnderdeel();
        Examen ex = getGeselecteerdExamen();
        String opleiding = getOpleiding().getOplNaam();
@@ -408,12 +432,13 @@ public class GuiEXAMENINPLANNEN extends javax.swing.JFrame {
         setSlotlijst(opleiding, sem);
         setAantalTeKiezenSlots();
         setMaxStudentenPerSlot();
+        SlotSubmit.setEnabled(true);
        } catch (DBException e){
            System.out.println("ERROR");
        } catch (Exception ex1) {
             Logger.getLogger(GuiEXAMENINPLANNEN.class.getName()).log(Level.SEVERE, null, ex1);
         }
-    }//GEN-LAST:event_OpleidingsOnderdeelSubmitActionPerformed
+    }//GEN-LAST:event_ExamenSubmitActionPerformed
 
     private void semesterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_semesterActionPerformed
         // TODO add your handling code here:
@@ -434,7 +459,26 @@ public class GuiEXAMENINPLANNEN extends javax.swing.JFrame {
                         examenSessiesInBehandeling = 0;
                      JOptionPane.showMessageDialog(this, "Kies " + calculateAantalNodigeSurveillanten(examenSessiesTePlannen.get(examenSessiesInBehandeling)) + " surveillanten voor examensessie " + (examenSessiesInBehandeling+1) + ".", "surveillanten toewijzen", JOptionPane.PLAIN_MESSAGE);
                      setAssistentenLijst(examenSessiesTePlannen.get(examenSessiesInBehandeling).getSlotNr());
+                     SurveillantenSubmit.setEnabled(true);
+                     SlotSubmit.setEnabled(false);
+                     LokaalSubmit.setEnabled(false);
+                     ButtonKeerTerugNaarMenu.setEnabled(false);
                     } else {
+                        // desabled weer alle knoppen en maakt de nodige lijsten weer leeg.
+                        SurveillantenSubmit.setEnabled(false);
+                        FaculteitSubmit.setEnabled(true);
+                        OpleidingEnSemesterSubmit.setEnabled(true);
+                        ExamenSubmit.setEnabled(true);
+                        setExamenLijst(getSemester(), getOpleiding());
+                        slotLijst.setModel(new DefaultListModel<Slot>());
+                        lokaalLijst.setModel(new DefaultListModel<Lokaal>());
+                        SurveillantenList.setModel(new DefaultListModel<Assistent>());
+                        aantalInschrijvingen.setText("");
+                        VerantwoordelijkeLesgever.setText("");
+                        SoortExamen.setText("");
+                        aantalTeKiezenSlots.setText("");
+                        MaxStudentenPerSlot.setText("");
+                        ButtonKeerTerugNaarMenu.setEnabled(true);
                         JOptionPane.showMessageDialog(this, "Geen Surveillanten nodig. Examen is succesvol ingepland.");
                     }
                      
@@ -462,6 +506,21 @@ public class GuiEXAMENINPLANNEN extends javax.swing.JFrame {
                 else {
                     examenSessiesInBehandeling = 0;
                     examenSessiesTePlannen.clear();
+                    // desabled weer alle knoppen en maakt de nodige lijsten weer leeg.
+                    SurveillantenSubmit.setEnabled(false);
+                    FaculteitSubmit.setEnabled(true);
+                    OpleidingEnSemesterSubmit.setEnabled(true);
+                    ExamenSubmit.setEnabled(true);
+                    setExamenLijst(getSemester(), getOpleiding());
+                    slotLijst.setModel(new DefaultListModel<Slot>());
+                    lokaalLijst.setModel(new DefaultListModel<Lokaal>());
+                    SurveillantenList.setModel(new DefaultListModel<Assistent>());
+                    aantalInschrijvingen.setText("");
+                    VerantwoordelijkeLesgever.setText("");
+                    SoortExamen.setText("");
+                    aantalTeKiezenSlots.setText("");
+                    MaxStudentenPerSlot.setText("");
+                    ButtonKeerTerugNaarMenu.setEnabled(true);
                     JOptionPane.showMessageDialog(this, "Examen is succesvol ingepland.");
                 }
             }
@@ -472,17 +531,22 @@ public class GuiEXAMENINPLANNEN extends javax.swing.JFrame {
             Logger.getLogger(GuiEXAMENINPLANNEN.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_SurveillantenSubmitActionPerformed
+
+    private void ButtonKeerTerugNaarMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonKeerTerugNaarMenuActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_ButtonKeerTerugNaarMenuActionPerformed
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton ButtonKeerTerugNaarMenu;
     private javax.swing.JList<Examen> ExamenLijst;
+    private javax.swing.JButton ExamenSubmit;
     private javax.swing.JList<Faculteit> FaculteitLijst;
     private javax.swing.JButton FaculteitSubmit;
     private javax.swing.JButton LokaalSubmit;
     private javax.swing.JTextField MaxStudentenPerSlot;
     private javax.swing.JButton OpleidingEnSemesterSubmit;
     private javax.swing.JList<Opleiding> OpleidingsLijst;
-    private javax.swing.JButton OpleidingsOnderdeelSubmit;
     private javax.swing.JButton SlotSubmit;
     private javax.swing.JTextField SoortExamen;
     private javax.swing.JList<Assistent> SurveillantenList;
