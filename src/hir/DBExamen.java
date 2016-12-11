@@ -341,4 +341,46 @@ public class DBExamen {
             throw new DBException(ex);
         }             
     }
+    
+    public static List<Integer> getGeplandeExamenNrs(int semester, String oplNaam, int exKans)throws DBException{
+         Connection con = null;
+        try
+        {
+            con = DB.getConnection();
+           
+            String sql =    "Select distinct e.ExNr From Examen e " +
+                            "left join ExamenToegewezen et on e.ExNr = et.ExNr " +
+                            "join Opleidingsonderdeel oo on oo.OplOndNaam = e.OplOndNaam " +
+                            "join Bestaatuit bu on bu.OplOndNaam = oo.OplOndNaam " +
+                            "where et.ExNr is not null and e.ExamenKans = ? and bu.OplNaam = ? and oo.semester = ?" ;
+            PreparedStatement stmt = con.prepareStatement(sql);
+
+            stmt.setInt(1, exKans);
+            stmt.setString(2, oplNaam);
+            stmt.setInt(3, semester);
+            
+            ResultSet srs = stmt.executeQuery();
+            
+            List<Integer> ongeplandeExamenNrs = new ArrayList<>();
+            
+            while(srs.next()){
+                ongeplandeExamenNrs.add(srs.getInt("ExNr"));
+            } 
+                        
+            DB.closeConnection(con);
+            return ongeplandeExamenNrs;             
+            }
+        catch (DBException dbe)
+        {
+            dbe.printStackTrace();
+            DB.closeConnection(con);
+            throw dbe;
+        }     
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+            DB.closeConnection(con);
+            throw new DBException(ex);
+        }             
+    }
 }
