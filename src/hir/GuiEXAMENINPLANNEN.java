@@ -14,13 +14,13 @@ import javax.swing.JOptionPane;
 
 
 
-public class ExamenGUI extends javax.swing.JFrame {
+public class GuiEXAMENINPLANNEN extends javax.swing.JFrame {
 
     private int slotInBehandeling = 0;
     private List<ExamenSessie> examenSessiesTePlannen = new ArrayList<>();
     private int examenSessiesInBehandeling = 0;
     
-    public ExamenGUI() {
+    public GuiEXAMENINPLANNEN() {
         initComponents();
         
     }
@@ -411,7 +411,7 @@ public class ExamenGUI extends javax.swing.JFrame {
        } catch (DBException e){
            System.out.println("ERROR");
        } catch (Exception ex1) {
-            Logger.getLogger(ExamenGUI.class.getName()).log(Level.SEVERE, null, ex1);
+            Logger.getLogger(GuiEXAMENINPLANNEN.class.getName()).log(Level.SEVERE, null, ex1);
         }
     }//GEN-LAST:event_OpleidingsOnderdeelSubmitActionPerformed
 
@@ -437,9 +437,9 @@ public class ExamenGUI extends javax.swing.JFrame {
             }
            
         } catch (DBException ex) {
-            Logger.getLogger(ExamenGUI.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GuiEXAMENINPLANNEN.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
-            Logger.getLogger(ExamenGUI.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GuiEXAMENINPLANNEN.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }//GEN-LAST:event_LokaalSubmitActionPerformed
@@ -462,9 +462,9 @@ public class ExamenGUI extends javax.swing.JFrame {
             }
             
         } catch (DBException ex) {
-            Logger.getLogger(ExamenGUI.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GuiEXAMENINPLANNEN.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
-            Logger.getLogger(ExamenGUI.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GuiEXAMENINPLANNEN.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_SurveillantenSubmitActionPerformed
     
@@ -658,7 +658,7 @@ public class ExamenGUI extends javax.swing.JFrame {
                     aantalStudenten = teVerdelenStudenten;
                 }
                 int esNr = DBExamenSessie.exSessieAanmaken(aantalStudenten, slotNr, exNr);
-                examenSessiesTePlannen.add(new ExamenSessie(esNr, aantalStudenten, lok, slotNr));
+                examenSessiesTePlannen.add(new ExamenSessie(esNr, aantalStudenten, slotNr));
                 DBLokaal.LokalenBoeken(lok, esNr);
             }
             return true;
@@ -696,8 +696,7 @@ public class ExamenGUI extends javax.swing.JFrame {
 
     private void setAssistentenLijst(int slotNr) throws DBException {
         DefaultListModel listSurveillanten = new DefaultListModel();
-        String oplOndNaam = getOpleidingsOnderdeel();
-        for(Assistent assistent : DBAssistent.getVrijeAssistenten(slotNr, oplOndNaam)){
+        for(Assistent assistent : DBAssistent.getVrijeAssistenten(slotNr)){
            listSurveillanten.addElement(assistent);
         }
         SurveillantenList.setModel(listSurveillanten);

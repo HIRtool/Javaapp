@@ -11,12 +11,12 @@ import javax.swing.DefaultListModel;
  *
  * @author matthieu
  */
-public class EXAMENGUIROOSTERAFDRUKKEN extends javax.swing.JFrame {
+public class GuiROOSTERAFDRUKKEN extends javax.swing.JFrame {
 
     /**
      * Creates new form EXAMENGUIROOSTERAFDRUKKEN
      */
-    public EXAMENGUIROOSTERAFDRUKKEN() {
+    public GuiROOSTERAFDRUKKEN() {
         initComponents();
     }
 

@@ -8,12 +8,13 @@ public class HIR {
     
 
     public static void main(String[] args) throws DBException {
-        ExamenGUI c = new ExamenGUI();
-        c.show();
+        GuiEXAMENINPLANNEN c = new GuiEXAMENINPLANNEN();
+        //c.show();
         c.setFaculteitLijst();
      
-        EXAMENGUISurveillantWisselen2 d = new EXAMENGUISurveillantWisselen2();
-        //d.show();
+              
+        GuiMENU menu = new GuiMENU();
+        menu.show();
    
         
         

@@ -99,15 +99,23 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="56" max="-2" attributes="0"/>
+          <Group type="102" attributes="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="examenRoosterAfdrukken" min="-2" max="-2" attributes="0"/>
-                  <Component id="ExamenSessieAanmaken" min="-2" max="-2" attributes="0"/>
-                  <Component id="surveillantieWisselen" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="56" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                          <Component id="ButtonExamenUitplannen" alignment="0" max="32767" attributes="0"/>
+                          <Component id="ButtonExamenRoosterAfdrukken" pref="253" max="32767" attributes="0"/>
+                          <Component id="ButtonSurveillantieWisselen" max="32767" attributes="0"/>
+                          <Component id="ButtonExamenInplannen" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
+                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                  </Group>
               </Group>
-              <EmptySpace pref="53" max="32767" attributes="0"/>
+              <EmptySpace pref="41" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -116,13 +124,15 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
-              <Component id="surveillantieWisselen" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
-              <Component id="ExamenSessieAanmaken" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
-              <Component id="examenRoosterAfdrukken" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="76" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+              <Component id="ButtonExamenInplannen" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
+              <Component id="ButtonExamenUitplannen" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="ButtonSurveillantieWisselen" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="ButtonExamenRoosterAfdrukken" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="50" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -136,29 +146,34 @@
         <Property name="text" type="java.lang.String" value="WELKE ACTIE WILT U UITVOEREN?"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JRadioButton" name="surveillantieWisselen">
+    <Component class="javax.swing.JButton" name="ButtonSurveillantieWisselen">
       <Properties>
         <Property name="text" type="java.lang.String" value="Surveillantie wisselen"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="surveillantieWisselenActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ButtonSurveillantieWisselenActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JRadioButton" name="ExamenSessieAanmaken">
+    <Component class="javax.swing.JButton" name="ButtonExamenInplannen">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Examensessie aanmaken"/>
+        <Property name="text" type="java.lang.String" value="Examen inplannen"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ExamenSessieAanmakenActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ButtonExamenInplannenActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JRadioButton" name="examenRoosterAfdrukken">
+    <Component class="javax.swing.JButton" name="ButtonExamenRoosterAfdrukken">
       <Properties>
         <Property name="text" type="java.lang.String" value="Examenrooster afdrukken"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="examenRoosterAfdrukkenActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ButtonExamenRoosterAfdrukkenActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="ButtonExamenUitplannen">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Examen uitlplannen"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>
