@@ -258,7 +258,7 @@ public class DBExamen {
         }             
     }
     
-    public static int getExamenNr(String oplOndNaam, int exKans) throws DBException{
+    public static int getExamenNr(String oplOndNaam, int exKans, String exNaam) throws DBException{
          Connection con = null;
         try
         {
@@ -266,11 +266,12 @@ public class DBExamen {
            
             String sql = "Select ExNr " +
                             "From Examen " +
-                            "Where OplOndNaam = ? And ExamenKans = ?" ;
+                            "Where OplOndNaam = ? And ExamenKans = ? And ExamenNaam = ?" ;
             PreparedStatement stmt = con.prepareStatement(sql);
 
             stmt.setString(1, oplOndNaam);
             stmt.setInt(2, exKans);
+            stmt.setString(3, exNaam);
             
             int exNr;
             

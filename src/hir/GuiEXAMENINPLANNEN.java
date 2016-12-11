@@ -349,7 +349,7 @@ public class GuiEXAMENINPLANNEN extends javax.swing.JFrame {
         slotInBehandeling = 0;
         try {
             List<Slot> slots = getSlots();
-            int exNr = DBExamen.getExamenNr(getOpleidingsOnderdeel(), 1);
+            int exNr = DBExamen.getExamenNr(getOpleidingsOnderdeel(), 1, getExamenNaam());
             
             if (slots.isEmpty()){
                 JOptionPane.showMessageDialog(this, "Nog geen slots gekozen" , "Foute Slotkeuze", JOptionPane.WARNING_MESSAGE);
@@ -812,6 +812,10 @@ public class GuiEXAMENINPLANNEN extends javax.swing.JFrame {
         } else
             return true;
         
+    }
+
+    private String getExamenNaam() {
+        return ExamenLijst.getSelectedValue().getExNaam();
     }
 }
 
