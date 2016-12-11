@@ -64,16 +64,27 @@ public class DBOpleiding {
             throw new DBException(ex);
         }        
     }
-    public static int getOpleidingsduur(String oplNaam) throws DBException{
+    public static int getOpleidingsduur(Opleiding opl) throws DBException{
         Connection con = null;
         try
         {
              con = DB.getConnection();
             String sql = "SELECT opleidingsduur FROM Opleiding WHERE OplNaam = ? ";
             PreparedStatement stmt = con.prepareStatement(sql);
-            stmt.setString(1, oplNaam);
-            ResultSet srs = stmt.executeQuery(sql);
-            int opleidingsduur = srs.getInt("opleidingsduur");
+            stmt.setString(1, opl.getOplNaam());
+            
+            ResultSet srs = stmt.executeQuery();
+            int opleidingsduur;
+            
+            if (srs.next())
+            {
+                opleidingsduur = srs.getInt("opleidingsduur");
+            }
+            else {
+                DB.closeConnection(con);
+                return 0;
+            }
+            
             DB.closeConnection(con);
             
             return opleidingsduur;
