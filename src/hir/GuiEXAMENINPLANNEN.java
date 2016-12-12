@@ -485,7 +485,6 @@ public class GuiEXAMENINPLANNEN extends javax.swing.JFrame {
                         ButtonKeerTerugNaarMenu.setEnabled(true);
                         LokaalSubmit.setEnabled(false);
                         SemesterSubmit.setEnabled(true);
-                        setExamenLijst(getSemester(), getOpleiding());
                         slotLijst.setModel(new DefaultListModel<Slot>());
                         lokaalLijst.setModel(new DefaultListModel<Lokaal>());
                         SurveillantenList.setModel(new DefaultListModel<Assistent>());
@@ -495,6 +494,7 @@ public class GuiEXAMENINPLANNEN extends javax.swing.JFrame {
                         aantalTeKiezenSlots.setText("");
                         MaxStudentenPerSlot.setText("");
                         JOptionPane.showMessageDialog(this, "Geen Surveillanten nodig. Examen is succesvol ingepland.");
+                        setExamenLijst(getSemester(), getOpleiding());
                     }
                      
                 }

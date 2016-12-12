@@ -5,6 +5,9 @@
  */
 package hir;
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
@@ -19,6 +22,9 @@ public class GuiEXAMENUITPLANNEN extends javax.swing.JFrame {
      */
     public GuiEXAMENUITPLANNEN() {
         initComponents();
+        ButtonGekozenOpleiding.setEnabled(false);
+        ButtonSemesterSubmit.setEnabled(false);
+        ButtonExamenSubmit.setEnabled(false);
     }
 
     /**
@@ -84,6 +90,11 @@ public class GuiEXAMENUITPLANNEN extends javax.swing.JFrame {
         });
 
         ButtonExamenSubmit.setText("Verwijder examen");
+        ButtonExamenSubmit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ButtonExamenSubmitActionPerformed(evt);
+            }
+        });
 
         ButtonSemesterSubmit.setText("Submit");
         ButtonSemesterSubmit.addActionListener(new java.awt.event.ActionListener() {
@@ -210,6 +221,18 @@ public class GuiEXAMENUITPLANNEN extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_ButtonSemesterSubmitActionPerformed
 
+    private void ButtonExamenSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonExamenSubmitActionPerformed
+        try {
+            examenUitplannen();
+            JOptionPane.showMessageDialog(this, "Examen succesvol uitgepland" , "Examen uitplannen", JOptionPane.PLAIN_MESSAGE);
+                    this.dispose();
+        } catch (DBException ex) {
+            Logger.getLogger(GuiEXAMENUITPLANNEN.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(GuiEXAMENUITPLANNEN.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_ButtonExamenSubmitActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -312,5 +335,11 @@ public class GuiEXAMENUITPLANNEN extends javax.swing.JFrame {
         } else {
             LijstGeplandeExamens.setModel(dlm3);
         }
+    }
+
+    private void examenUitplannen() throws DBException, SQLException {
+        Examen ex = LijstGeplandeExamens.getSelectedValue();
+        DBExamenSessie.examenSessiesVerwijderen(ex);            //Verwijdert examensessies en bijhorende lokalen en surveillanten
+        DBExamenToegewezen.deleteToegewezenExamen(ex);
     }
 }
