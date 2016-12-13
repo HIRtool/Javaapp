@@ -1,20 +1,14 @@
 package hir;
 
 import java.awt.*;
-import java.io.*;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.*;
 
 import com.mindfusion.common.*;
-import com.mindfusion.common.Rectangle;
 import com.mindfusion.drawing.*;
-import com.mindfusion.drawing.awt.AwtImage;
 import com.mindfusion.scheduling.*;
 import com.mindfusion.scheduling.awt.*;
 import com.mindfusion.scheduling.model.*;
-import java.util.Date;
 
 public class Rooster extends JFrame {
 
@@ -26,7 +20,7 @@ public class Rooster extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         setTitle("Examenoverzicht");
-        setMinimumSize(new Dimension(1200,900));
+        setMinimumSize(new Dimension(1700,1200));
 
         BorderLayout layout = new BorderLayout();
         getContentPane().setLayout(layout);

@@ -493,6 +493,9 @@ public class GuiEXAMENINPLANNEN extends javax.swing.JFrame {
                         SoortExamen.setText("");
                         aantalTeKiezenSlots.setText("");
                         MaxStudentenPerSlot.setText("");
+                        examenSessiesInBehandeling = 0;
+                        slotInBehandeling = 0;
+                        examenSessiesTePlannen.clear();
                         JOptionPane.showMessageDialog(this, "Geen Surveillanten nodig. Examen is succesvol ingepland.");
                         setExamenLijst(getSemester(), getOpleiding());
                     }
