@@ -161,8 +161,14 @@ public class GuiMENU extends javax.swing.JFrame {
     }//GEN-LAST:event_ButtonExamenInplannenActionPerformed
 
     private void ButtonExamenRoosterAfdrukkenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonExamenRoosterAfdrukkenActionPerformed
-        GuiROOSTERAFDRUKKEN  roosterAfdrukken = new GuiROOSTERAFDRUKKEN();
-        roosterAfdrukken.show();
+        GuiROOSTERAFDRUKKEN  roosterAfdrukken;
+        try {
+            roosterAfdrukken = new GuiROOSTERAFDRUKKEN();
+            roosterAfdrukken.show();
+        } catch (DBException ex) {
+            Logger.getLogger(GuiMENU.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }//GEN-LAST:event_ButtonExamenRoosterAfdrukkenActionPerformed
 
     private void ButtonExamenUitplannenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonExamenUitplannenActionPerformed

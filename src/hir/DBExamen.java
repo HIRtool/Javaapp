@@ -1,14 +1,13 @@
 package hir;
 
-import java.sql.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import javax.sql.rowset.serial.SerialArray;
 
 public class DBExamen {
     
@@ -382,5 +381,64 @@ public class DBExamen {
             DB.closeConnection(con);
             throw new DBException(ex);
         }             
+    }
+    
+    public static List<ExamenRoosterWeergaveItem> getGeplandeExamensRooster(String oplNaam, int semester, int exKans) throws DBException
+    {
+        List<ExamenRoosterWeergaveItem> examens = new ArrayList<>();
+        
+            Connection con = null;
+            try
+            {
+                con = DB.getConnection();
+
+                String sql =    "Select distinct e.ExNr, s.Datum, s.Moment, e.ExamenNaam From Examen e " +
+                                "left join ExamenToegewezen et on e.ExNr = et.ExNr " +
+                                "join Opleidingsonderdeel oo on oo.OplOndNaam = e.OplOndNaam " +
+                                "join Slot s ON s.SlotNr = et.SlotNr " +
+                                "join Bestaatuit bu on bu.OplOndNaam = oo.OplOndNaam  " +
+                                "where et.ExNr is not null and e.ExamenKans = ? and bu.OplNaam = ? and oo.semester = ?";
+
+                PreparedStatement stmt = con.prepareStatement(sql);
+
+                stmt.setInt(1, exKans);
+                stmt.setString(2, oplNaam);
+                stmt.setInt(3, semester);
+
+                ResultSet srs = stmt.executeQuery();
+
+                int exNr;
+                String exNaam;
+                Slot.Moment moment;
+                Date datum;
+                
+                while (srs.next()){
+                    exNr = srs.getInt("e.ExNr");
+                    exNaam = srs.getString("e.ExamenNaam");
+                    if(srs.getInt("s.Moment")==1){
+                        moment = Slot.Moment.VoorMiddag;
+                    }
+                    else{
+                        moment = Slot.Moment.NaMiddag;
+                    }
+                    datum = srs.getDate("s.Datum");
+                    examens.add(new ExamenRoosterWeergaveItem(exNr, exNaam, datum, moment));
+                    
+                }
+                DB.closeConnection(con);
+                return examens;
+            }catch (DBException dbe)
+            {
+                dbe.printStackTrace();
+                DB.closeConnection(con);
+                throw dbe;
+            }     
+            catch (Exception ex)
+            {
+                ex.printStackTrace();
+                DB.closeConnection(con);
+                throw new DBException(ex);
+            }    
+        
     }
 }

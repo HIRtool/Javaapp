@@ -5,6 +5,12 @@
  */
 package hir;
 
+import com.mindfusion.common.DateTime;
+import static com.sun.org.apache.xalan.internal.lib.ExsltDatetime.date;
+import java.util.Calendar;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 
 /**
@@ -16,8 +22,11 @@ public class GuiROOSTERAFDRUKKEN extends javax.swing.JFrame {
     /**
      * Creates new form EXAMENGUIROOSTERAFDRUKKEN
      */
-    public GuiROOSTERAFDRUKKEN() {
+    public GuiROOSTERAFDRUKKEN() throws DBException {
         initComponents();
+        setFaculteitLijst();
+        ButtonOpleidingSubmit.setEnabled(false);
+        ButtonRoosterAfdruk.setEnabled(false);
     }
 
     /**
@@ -34,70 +43,83 @@ public class GuiROOSTERAFDRUKKEN extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         OpleidingenLijst = new javax.swing.JList<>();
         jLabel3 = new javax.swing.JLabel();
-        semester = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         faculteitLijst = new javax.swing.JList<>();
-        FaculteitSubmit = new javax.swing.JButton();
-        RoosterAfdruk = new javax.swing.JButton();
+        ButtonFaculteitSubmit = new javax.swing.JButton();
+        ButtonRoosterAfdruk = new javax.swing.JButton();
+        ButtonOpleidingSubmit = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        LijstSemester = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel1.setText("VAN WELK OPLEIDINGSONDERDEEL WILT U HET EXAMENROOSTER AFDRUKKEN?");
+        jLabel1.setText("WAARVAN WILT U HET EXAMENROOSTER AFDRUKKEN?");
 
         jLabel2.setText("Opleiding: ");
 
+        OpleidingenLijst.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(OpleidingenLijst);
 
         jLabel3.setText("Semester:");
 
         jLabel4.setText("Faculteit:");
 
+        faculteitLijst.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane2.setViewportView(faculteitLijst);
 
-        FaculteitSubmit.setText("submit");
-        FaculteitSubmit.addActionListener(new java.awt.event.ActionListener() {
+        ButtonFaculteitSubmit.setText("submit");
+        ButtonFaculteitSubmit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                FaculteitSubmitActionPerformed(evt);
+                ButtonFaculteitSubmitActionPerformed(evt);
             }
         });
 
-        RoosterAfdruk.setText("Rooster Afdrukken");
-        RoosterAfdruk.addActionListener(new java.awt.event.ActionListener() {
+        ButtonRoosterAfdruk.setText("Rooster weergeven");
+        ButtonRoosterAfdruk.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                RoosterAfdrukActionPerformed(evt);
+                ButtonRoosterAfdrukActionPerformed(evt);
             }
         });
+
+        ButtonOpleidingSubmit.setText("submit");
+        ButtonOpleidingSubmit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ButtonOpleidingSubmitActionPerformed(evt);
+            }
+        });
+
+        LijstSemester.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane3.setViewportView(LijstSemester);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(21, 21, 21)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(118, 118, 118)
-                        .addComponent(jLabel1))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel2))
+                        .addGap(62, 62, 62)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(ButtonFaculteitSubmit)
+                            .addComponent(ButtonOpleidingSubmit)))
+                    .addComponent(jLabel1)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
+                        .addComponent(jLabel3)
+                        .addGap(64, 64, 64)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(9, 9, 9)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel2))
-                                .addGap(62, 62, 62)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)
-                                    .addComponent(semester)
-                                    .addComponent(jScrollPane1)))
-                            .addComponent(jLabel3))
-                        .addGap(123, 123, 123)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(FaculteitSubmit)
-                            .addComponent(RoosterAfdruk))))
-                .addContainerGap(64, Short.MAX_VALUE))
+                            .addComponent(ButtonRoosterAfdruk, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -105,47 +127,95 @@ public class GuiROOSTERAFDRUKKEN extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(21, 21, 21)
+                        .addComponent(ButtonFaculteitSubmit))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addGap(9, 9, 9)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel2)
-                        .addGap(142, 142, 142)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(semester, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(25, 25, 25))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(12, 12, 12)
-                                .addComponent(FaculteitSubmit)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
-                        .addComponent(RoosterAfdruk)
-                        .addContainerGap())))
+                        .addGap(99, 99, 99))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(ButtonOpleidingSubmit)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addGap(18, 18, 18)
+                .addComponent(ButtonRoosterAfdruk)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void FaculteitSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FaculteitSubmitActionPerformed
+    private void ButtonFaculteitSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonFaculteitSubmitActionPerformed
        try{  
         setOpleidingenLijst();
+        ButtonOpleidingSubmit.setEnabled(true);
      } catch(DBException e){
          System.out.println("ERROR");
      }
-    }//GEN-LAST:event_FaculteitSubmitActionPerformed
+    }//GEN-LAST:event_ButtonFaculteitSubmitActionPerformed
 
-    private void RoosterAfdrukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RoosterAfdrukActionPerformed
-        String opleiding = getOpleiding();
-        int sem = getSemester();
-    }//GEN-LAST:event_RoosterAfdrukActionPerformed
+    private void ButtonRoosterAfdrukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonRoosterAfdrukActionPerformed
+        Rooster window = new Rooster();
+        List<ExamenRoosterWeergaveItem> geplandeExamens;
+        try {
+            geplandeExamens = DBExamen.getGeplandeExamensRooster(getOpleiding().getOplNaam(),getSemester(), 1);
+            for(ExamenRoosterWeergaveItem ex : geplandeExamens){
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(ex.getExDatum());
+                int year = cal.get(Calendar.YEAR);
+                int month = cal.get(Calendar.MONTH) + 1;
+                int day = cal.get(Calendar.DAY_OF_MONTH);
+                
+                if(ex.getExMoment() == Slot.Moment.VoorMiddag){
+                    window.addExamenToCalendar(new DateTime(year, month, day, 8, 0, 0), new DateTime(year, month, day, 12, 0, 0), ex.getExNaam() + "\nVoormiddag");
+                } else {
+                    window.addExamenToCalendar(new DateTime(year, month, day, 13, 0, 0), new DateTime(year, month, day, 17, 0, 0), ex.getExNaam() + "\nNamiddag");
+                }
+                
+            }
+        } catch (DBException ex) {
+            Logger.getLogger(GuiROOSTERAFDRUKKEN.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_ButtonRoosterAfdrukActionPerformed
+
+    private void ButtonOpleidingSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonOpleidingSubmitActionPerformed
+        Opleiding opleiding = getOpleiding();
+        try {
+            setSemesterLijst(opleiding);
+            ButtonRoosterAfdruk.setEnabled(true);
+        } catch(DBException e){
+            System.out.println("ERROR");
+        }
+    }//GEN-LAST:event_ButtonOpleidingSubmitActionPerformed
 
     
    
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton ButtonFaculteitSubmit;
+    private javax.swing.JButton ButtonOpleidingSubmit;
+    private javax.swing.JButton ButtonRoosterAfdruk;
+    private javax.swing.JList<Integer> LijstSemester;
+    private javax.swing.JList<Opleiding> OpleidingenLijst;
+    private javax.swing.JList<Faculteit> faculteitLijst;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    // End of variables declaration//GEN-END:variables
+
     public void setFaculteitLijst() throws DBException{
         DefaultListModel dlm = new DefaultListModel();
         for(Faculteit f: DBFaculteit.getFaculteiten()){
@@ -162,27 +232,22 @@ public class GuiROOSTERAFDRUKKEN extends javax.swing.JFrame {
         }
         OpleidingenLijst.setModel(dlm2);
     }
-    /*public String getFaculteit(){
-      return faculteitLijst.getSelectedValue();
-    }*/
-    public int getSemester(){
-        return Integer.parseInt(semester.getText());
-    }
-    public String getOpleiding(){
+    
+    public Opleiding getOpleiding(){
         return OpleidingenLijst.getSelectedValue();
     }
+    
+    public void setSemesterLijst(Opleiding opl) throws DBException{
+       DefaultListModel semesterLijst = new DefaultListModel();
+       for (int i = 1; i <= (DBOpleiding.getOpleidingsduur(opl)*2)  ; i++) {
+           semesterLijst.addElement(i);
+           
+       } 
+       LijstSemester.setModel(semesterLijst);
+   } 
+    
+    public int getSemester(){
+        return LijstSemester.getSelectedValue();
+    }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton FaculteitSubmit;
-    private javax.swing.JList<String> OpleidingenLijst;
-    private javax.swing.JButton RoosterAfdruk;
-    private javax.swing.JList<Faculteit> faculteitLijst;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextField semester;
-    // End of variables declaration//GEN-END:variables
 }

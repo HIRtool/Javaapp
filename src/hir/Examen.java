@@ -7,6 +7,7 @@ public abstract class Examen {
     private int examenKans;
     private int aantalStudenten;
     private Opleidingsonderdeel opleidingOnderdeel;
+    private Slot slot;
 
     public Examen(int exNr, String exNaam, int examenKans, int aantalStudenten, Opleidingsonderdeel opleidingOnderdeel) {
         this.exNr = exNr;
@@ -56,6 +57,15 @@ public abstract class Examen {
     public void setAantalStudenten(int aantalStudenten) {
         this.aantalStudenten = aantalStudenten;
     }
+
+    public Slot getSlot() {
+        return slot;
+    }
+
+    public void setSlot(Slot slot) {
+        this.slot = slot;
+    }
+    
     
     
 }
