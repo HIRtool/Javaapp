@@ -20,7 +20,8 @@ public class Rooster extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         setTitle("Examenoverzicht");
-        setMinimumSize(new Dimension(1700,1200));
+        //setMinimumSize(new Dimension(1700,1200));
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         BorderLayout layout = new BorderLayout();
         getContentPane().setLayout(layout);
@@ -66,6 +67,8 @@ public class Rooster extends JFrame {
         item.setSubject(subject);
         
         item.setLocked(true);
+        
+        item.setAllDayEvent(true);
 
         calendar.getSchedule().getItems().add(item);
     }
