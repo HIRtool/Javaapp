@@ -309,7 +309,7 @@ public class DBExamen {
                             "left join ExamenToegewezen et on e.ExNr = et.ExNr " +
                             "join Opleidingsonderdeel oo on oo.OplOndNaam = e.OplOndNaam " +
                             "join Bestaatuit bu on bu.OplOndNaam = oo.OplOndNaam " +
-                            "where et.ExNr is null and e.ExamenKans = ? and bu.OplNaam = ? and oo.semester = ?" ;
+                            "where et.ExNr is null and e.Aantal_Studenten is not null and e.ExamenKans = ? and bu.OplNaam = ? and oo.semester = ?" ;
             PreparedStatement stmt = con.prepareStatement(sql);
 
             stmt.setInt(1, exKans);
